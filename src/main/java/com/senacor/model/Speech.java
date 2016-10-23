@@ -5,4 +5,5 @@ package com.senacor.model;
  */
 
 public class Speech {
+    private String speechName;
 }

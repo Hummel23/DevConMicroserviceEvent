@@ -2,6 +2,7 @@ package com.senacor.model;
 
 import org.springframework.data.annotation.Id;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -10,15 +11,18 @@ import java.util.Date;
 public class Event {
 
     @Id
-    private Long id;
+    private String id;
 
     private String place;
 
-    private Date date;
+    private LocalDate date;
 
     private String name;
 
-    public void setId(Long id) {
+    public Event(String name){
+        this.name=name;
+    }
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -26,8 +30,8 @@ public class Event {
         this.place = place;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setDate(LocalDate date) {
+         this.date = date;
     }
 
     public void setName(String name) {
@@ -39,7 +43,7 @@ public class Event {
         return place;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
@@ -47,7 +51,7 @@ public class Event {
         return name;
     }
 
-    public Long getId() {
+    public String getId() {
 
         return id;
     }

@@ -23,7 +23,7 @@ public class EventController {
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-        public Event sgetEvent(@PathVariable("id") String id){
+        public Event getEvent(@PathVariable("id") String id){
         return eventRepository.findOne(id);
     }
 

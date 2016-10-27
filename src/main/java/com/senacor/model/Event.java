@@ -13,11 +13,13 @@ public class Event {
     @Id
     private String id;
 
+    private String name;
+
     private String place;
 
-    private LocalDate date;
+//    private LocalDate date;
 
-    private String name;
+
 
     public Event(){
         
@@ -33,10 +35,10 @@ public class Event {
         this.place = place;
     }
 
-    public void setDate(LocalDate date) {
+    /*public void setDate(LocalDate date) {
          this.date = date;
     }
-
+*/
     public void setName(String name) {
         this.name = name;
     }
@@ -46,9 +48,9 @@ public class Event {
         return place;
     }
 
-    public LocalDate getDate() {
+  /*  public LocalDate getDate() {
         return date;
-    }
+    }*/
 
     public String getName() {
         return name;

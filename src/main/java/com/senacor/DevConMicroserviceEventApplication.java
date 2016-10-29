@@ -23,10 +23,12 @@ public class DevConMicroserviceEventApplication implements CommandLineRunner{
     @Override
     public void run(String... strings) throws Exception {
         eventRepository.deleteAll();
-        eventRepository.save(new Event("conference"));
-        eventRepository.save(new Event("conference1"));
-        eventRepository.save(new Event("conference2"));
-        eventRepository.save(new Event("conference3"));
+        for (int i = 1; i <= 10; i++){
+            Event event = new Event();
+            event.setName("Conference No." + i);
+            event.setPlace("Example Street No. " + i);
+            eventRepository.save(event);
+        }
 
         for (Event event : eventRepository.findAll()) {
             System.out.println(event.getName());

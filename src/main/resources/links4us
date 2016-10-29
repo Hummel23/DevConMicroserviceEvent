@@ -7,12 +7,14 @@ https://github.com/spring-guides/gs-accessing-mongodb-data-rest/blob/master/comp
 
 // android rest interface
 https://software.intel.com/en-us/articles/accessing-a-rest-based-database-backend-from-an-android-
+ http://docs.spring.io/autorepo/docs/spring-android/1.0.x/reference/html/rest-template.html
 
 //Android parsing JSON
 http://www.androidhive.info/2012/01/android-json-parsing-tutorial/
 
 //List in Android
 http://www.androidhive.info/2011/10/android-listview-tutorial/
+http://www.erenpinaz.net/blog/post/2016/3/consuming-restful-web-service-android-part-2
 
 //understanding rest
 https://spring.io/understanding/REST

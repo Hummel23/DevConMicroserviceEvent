@@ -18,12 +18,12 @@ public class EventController {
     private EventRepository eventRepository;
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public Event getEvent() {
+/*    public Event getEvent() {
         return eventRepository.findByName("conference");
+    }*/
+    public Iterable<Event> listAllEvents() {
+        return eventRepository.findAll();
     }
-  //  public Iterable<Event> listAllEvents() {
-  //      return eventRepository.findAll();
-  //  }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
         public Event getEvent(@PathVariable("id") String id){

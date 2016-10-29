@@ -17,6 +17,7 @@ public class EventController {
     @Autowired
     private EventRepository eventRepository;
 
+    
     @RequestMapping(value = "", method = RequestMethod.GET)
 /*    public Event getEvent() {
         return eventRepository.findByName("conference");

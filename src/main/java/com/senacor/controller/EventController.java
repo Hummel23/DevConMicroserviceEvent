@@ -1,7 +1,9 @@
 package com.senacor.controller;
 
 import com.senacor.model.Event;
+import com.senacor.model.Speech;
 import com.senacor.repository.EventRepository;
+import com.senacor.repository.SpeechRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -17,18 +19,18 @@ public class EventController {
     @Autowired
     private EventRepository eventRepository;
 
+    @Autowired
+    private SpeechRepository speechRepository;
+
     
     @RequestMapping(value = "", method = RequestMethod.GET)
-/*    public Event getEvent() {
-        return eventRepository.findByName("conference");
-    }*/
     public Iterable<Event> listAllEvents() {
         return eventRepository.findAll();
     }
 
-    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
-        public Event getEvent(@PathVariable("id") String id){
-        return eventRepository.findOne(id);
+    @RequestMapping(value = "/{eventID}", method = RequestMethod.GET)
+        public Iterable<Speech> getEventSpeeches(@PathVariable("eventID") String eventID){
+        return speechRepository.findByEventID(eventID);
     }
 
     //Create Event Object with parameters with http-POST Request

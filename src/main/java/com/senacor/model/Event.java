@@ -1,5 +1,6 @@
 package com.senacor.model;
 
+import org.joda.time.LocalDate;
 import org.springframework.data.annotation.Id;
 
 import java.text.SimpleDateFormat;
@@ -17,7 +18,7 @@ public class Event {
 
     private String place;
 
-    private String date;
+    private LocalDate date;
 
 
 
@@ -38,12 +39,6 @@ public class Event {
         this.place = place;
     }
 
-    public void setDate(Date myDate)
-
-    {
-        this.date=new SimpleDateFormat("MM-dd-yyyy").format(myDate);
-    }
-
     public void setName(String name) {
         this.name = name;
     }
@@ -51,11 +46,6 @@ public class Event {
     public String getPlace() {
 
         return place;
-    }
-
-    public String getDate()
-    {
-        return date;
     }
 
     public String getName() {
@@ -67,6 +57,11 @@ public class Event {
         return id;
     }
 
+    public LocalDate getDate() {
+        return date;
+    }
 
-
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
 }

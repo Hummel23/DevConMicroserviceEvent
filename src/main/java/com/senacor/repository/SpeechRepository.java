@@ -13,8 +13,8 @@ import java.util.List;
  */
 
 @Repository
-@RepositoryRestResource(collectionResourceRel = "speech", path = "speech")
+@RepositoryRestResource(collectionResourceRel = "event", path = "speech")
 public interface SpeechRepository extends MongoRepository<Speech, String> {
 
-    List<Speech> findByEventId(@Param("eventId") String eventId);
+    List<Speech> findByEventID(@Param("eventID") String eventID);
 }

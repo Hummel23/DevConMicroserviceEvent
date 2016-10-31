@@ -2,27 +2,37 @@ package com.senacor.model;
 
 import org.springframework.data.annotation.Id;
 
-import java.time.LocalDate;
+import javax.validation.constraints.NotNull;
+import java.time.LocalTime;
 
-/**
- * Created by saba on 21.10.16.
- */
 
 public class Speech {
 
     @Id
     private String id;
     private String speechTitle;
-    private LocalDate speechTime;
+    private LocalTime startTime;
+    private LocalTime endTime;
+    private String speechRoom;
+    private String speaker;
+    private String speakerInfo;
+    private String speechSummary;
+    private String eventID;
+
+
     /*
     Objekte werden dann von Werten wie folgt gebildet:LocalDate.of(2012, Month.DECEMBER, 12); // from values
      */
-    private String speechLocation;
-    private String speechSpeaker;
-    private String speechSummary;
-    private String speechResumeSpeaker;
 
-    public Speech() {
+    public Speech(String eventID) {
+        this.eventID = eventID;
+    }
+
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getSpeechTitle() {
@@ -33,28 +43,45 @@ public class Speech {
         this.speechTitle = speechTitle;
     }
 
-    public LocalDate getSpeechTime() {
-        return speechTime;
+    public LocalTime getStartTime() {
+        return startTime;
     }
 
-    public void setSpeechTime(LocalDate speechTime) {
-        this.speechTime = speechTime;
+    public void setStartTime(LocalTime startTime) {
+        this.startTime = startTime;
     }
 
-    public String getSpeechLocation() {
-        return speechLocation;
+    public LocalTime getEndTime() {
+        return endTime;
     }
 
-    public void setSpeechLocation(String speechLocation) {
-        this.speechLocation = speechLocation;
+    public void setEndTime(LocalTime endTime) {
+        this.endTime = endTime;
     }
 
-    public String getSpeechSpeaker() {
-        return speechSpeaker;
+    public String getSpeechRoom() {
+        return speechRoom;
     }
 
-    public void setSpeechSpeaker(String speechSpeaker) {
-        this.speechSpeaker = speechSpeaker;
+    public void setSpeechRoom(String speechRoom) {
+        this.speechRoom = speechRoom;
+
+    }
+
+    public String getSpeaker() {
+        return speaker;
+    }
+
+    public void setSpeaker(String speaker) {
+        this.speaker = speaker;
+    }
+
+    public String getSpeakerInfo() {
+        return speakerInfo;
+    }
+
+    public void setSpeakerInfo(String speakerInfo) {
+        this.speakerInfo = speakerInfo;
     }
 
     public String getSpeechSummary() {
@@ -65,12 +92,14 @@ public class Speech {
         this.speechSummary = speechSummary;
     }
 
-    public String getSpeechResumeSpeaker() {
-        return speechResumeSpeaker;
+    public String getEventID() {
+        return eventID;
     }
 
-    public void setSpeechResumeSpeaker(String speechResumeSpeaker) {
-        this.speechResumeSpeaker = speechResumeSpeaker;
+    public void setEventID(String eventID) {
+        this.eventID = eventID;
     }
+
+
 
 }

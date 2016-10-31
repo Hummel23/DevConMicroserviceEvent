@@ -47,7 +47,7 @@ public class EventController {
         Event existingEvent = eventRepository.findOne(id);
         existingEvent.setName(event.getName());
         existingEvent.setPlace(event.getPlace());
-//        existingEvent.setDate(event.getDate());
+       // existingEvent.setDate(event.getDate());
         eventRepository.save(existingEvent);
     }
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE) //headers = "Accept=application/json"

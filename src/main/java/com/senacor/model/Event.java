@@ -2,7 +2,7 @@ package com.senacor.model;
 
 import org.springframework.data.annotation.Id;
 
-import java.time.LocalDate;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
@@ -17,13 +17,16 @@ public class Event {
 
     private String place;
 
-//    private LocalDate date;
+    private String date;
 
 
 
     public Event(){
         
     }
+
+    //Date myDate = new Date();
+
     public Event(String name){
         this.name=name;
     }
@@ -35,10 +38,12 @@ public class Event {
         this.place = place;
     }
 
-    /*public void setDate(LocalDate date) {
-         this.date = date;
+    public void setDate(Date myDate)
+
+    {
+        this.date=new SimpleDateFormat("MM-dd-yyyy").format(myDate);
     }
-*/
+
     public void setName(String name) {
         this.name = name;
     }
@@ -48,9 +53,10 @@ public class Event {
         return place;
     }
 
-  /*  public LocalDate getDate() {
+    public String getDate()
+    {
         return date;
-    }*/
+    }
 
     public String getName() {
         return name;
@@ -60,6 +66,7 @@ public class Event {
 
         return id;
     }
+
 
 
 }

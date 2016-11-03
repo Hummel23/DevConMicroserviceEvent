@@ -3,6 +3,7 @@ https://spring.io/guides/gs/accessing-mongodb-data-rest/
 http://docs.spring.io/spring-data/commons/docs/current/api/org/springframework/data/repository/CrudRepository.html
 
 //test controller
+http://blog.trifork.com/2012/12/11/properly-testing-spring-mvc-controllers/
 https://dzone.com/articles/unit-and-integration-tests-in-spring-boot
 https://myshittycode.com/2013/10/23/how-to-unit-test-spring-mvc-controller/
 http://www.lucassaldanha.com/unit-and-integration-tests-in-spring-boot/

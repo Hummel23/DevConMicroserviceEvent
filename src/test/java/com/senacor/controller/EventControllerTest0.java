@@ -60,12 +60,10 @@ public class EventControllerTest0 {
         String expectedData= "Conference No.1";
         when(createEventControllerMock.listAllEvents()).thenReturn(list);
                 mockMvc.perform(get("/event").contentType(MediaType.APPLICATION_JSON_UTF8))
-
                         .andExpect(jsonPath("$.[0].name", is("id")))
 
                         //Array now,  but wait for Json Object
                         //.andExpect(MockMvcResultMatchers.jsonPath("$.name").value(expectedData))
-
                         .andExpect(status().isOk());
 
 

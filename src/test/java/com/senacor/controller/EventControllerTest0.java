@@ -1,29 +1,33 @@
 package com.senacor.controller;
 
+import com.senacor.model.Event;
 import com.senacor.model.Speech;
 import com.senacor.repository.EventRepository;
-//import com.sun.tools.javac.util.List;
+import com.senacor.repository.SpeechRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.servlet.View;
 
-import java.util.*;
+import java.util.ArrayList;
 
+import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
+
 
 /**
  * Created by Marynasuprun on 31.10.2016.
  */
 public class EventControllerTest0 {
 
-/*
     @InjectMocks
     EventController createEventControllerMock;
 
@@ -50,9 +54,19 @@ public class EventControllerTest0 {
     }
     @Test
     public void getEvent() throws Exception {
+        ArrayList<Event> list = new ArrayList<>();
+        list.add(new Event("id"));
+        list.add(new Event("id"));
+        String expectedData= "Conference No.1";
+        when(createEventControllerMock.listAllEvents()).thenReturn(list);
+                mockMvc.perform(get("/event").contentType(MediaType.APPLICATION_JSON_UTF8))
+                        .andExpect(jsonPath("$.[0].name", is("id")))
 
-        mockMvc.perform(get("/event"))
-        .andExpect(status().isOk());
+                        //Array now,  but wait for Json Object
+                        //.andExpect(MockMvcResultMatchers.jsonPath("$.name").value(expectedData))
+                        .andExpect(status().isOk());
+
+
 
     }
 
@@ -68,7 +82,6 @@ public class EventControllerTest0 {
                 //.andExpect(view().name("event/ID"));
 }
 
-*/
 
 
 

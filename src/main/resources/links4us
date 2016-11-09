@@ -10,6 +10,9 @@ http://www.lucassaldanha.com/unit-and-integration-tests-in-spring-boot/
 https://github.com/spring-guides/gs-accessing-mongodb-data-rest/blob/master/complete/src/test/java/hello/ApplicationTests.java
 http://docs.spring.io/spring-batch/trunk/reference/html/testing.html
 
+// Array test
+https://www.javacodegeeks.com/2013/08/unit-testing-of-spring-mvc-controllers-rest-api.html
+
 // android rest interface
 https://software.intel.com/en-us/articles/accessing-a-rest-based-database-backend-from-an-android-
  http://docs.spring.io/autorepo/docs/spring-android/1.0.x/reference/html/rest-template.html

@@ -1,15 +1,19 @@
 package com.senacor.model;
 
+import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.hateoas.Link;
+import org.springframework.hateoas.ResourceSupport;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalTime;
 
-
-public class Speech {
+@Document
+public class Speech extends ResourceSupport implements Comparable<Speech>{
 
     @Id
-    private String id;
+    private String speechId;
     private String speechTitle;
     private LocalTime startTime;
     private LocalTime endTime;
@@ -25,14 +29,11 @@ public class Speech {
      */
 
     public Speech(String eventID) {
-        this.eventID = eventID;
+        this.eventID=eventID;
+        this.speechId = ObjectId.get().toString();
     }
 
-    public String getId() {
-        return id;
-    }
-    public void setId(String id) {
-        this.id = id;
+    public Speech() {
     }
 
     public String getSpeechTitle() {
@@ -92,14 +93,17 @@ public class Speech {
         this.speechSummary = speechSummary;
     }
 
+     public String getSpeechId() {
+        return speechId;
+     }
+
     public String getEventID() {
         return eventID;
     }
 
-    public void setEventID(String eventID) {
-        this.eventID = eventID;
+
+    @Override
+    public int compareTo(Speech o) {
+        return 0;
     }
-
-
-
 }

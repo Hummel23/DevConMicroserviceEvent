@@ -1,35 +1,21 @@
 package com.senacor.controller;
 
-import com.senacor.model.Event;
 import com.senacor.model.Speech;
 import com.senacor.repository.EventRepository;
-import com.senacor.repository.SpeechRepository;
-import com.sun.tools.javac.util.List;
+//import com.sun.tools.javac.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.mockito.stubbing.OngoingStubbing;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.boot.autoconfigure.web.WebMvcProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.test.web.servlet.ResultMatcher;
-import org.springframework.test.web.servlet.setup.StandaloneMockMvcBuilder;
 import org.springframework.web.servlet.View;
 
 import java.util.*;
 
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 /**
@@ -37,6 +23,7 @@ import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standal
  */
 public class EventControllerTest0 {
 
+/*
     @InjectMocks
     EventController createEventControllerMock;
 
@@ -81,6 +68,7 @@ public class EventControllerTest0 {
                 //.andExpect(view().name("event/ID"));
 }
 
+*/
 
 
 

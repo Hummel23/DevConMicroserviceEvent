@@ -21,7 +21,7 @@ import static org.mockito.Mockito.when;
  */
 public class EventControllerTest2 {
 
-    private EventController createEventService;
+ /*   private EventController createEventService;
     private EventRepository eventRepositoryMock;
 
     @Before
@@ -74,5 +74,5 @@ public class EventControllerTest2 {
     public void deleteEvent() throws Exception {
 
     }
-
+*/
 }

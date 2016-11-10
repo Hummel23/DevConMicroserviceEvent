@@ -2,7 +2,7 @@ package com.senacor.controller;
 
 import com.senacor.model.Event;
 import com.senacor.model.Speech;
-import com.senacor.repository.EventRepository;
+import com.senacor.service.EventService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -14,10 +14,9 @@ import org.springframework.web.servlet.View;
 
 import java.util.ArrayList;
 
-import static org.hamcrest.CoreMatchers.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
@@ -31,7 +30,7 @@ public class EventControllerTest0 {
     EventController createEventControllerMock;
 
     @Mock
-    EventRepository eventRepository;
+    EventService eventService;
 
     @Mock
     View mockView;
@@ -48,20 +47,24 @@ public class EventControllerTest0 {
 
 
     }
+
     @Test
     public void getEvent() throws Exception {
         ArrayList<Event> list = new ArrayList<>();
         list.add(new Event());
         list.add(new Event());
-        String expectedData= "Conference No.1";
+        String expectedData = "Conference No.1";
         when(createEventControllerMock.listAllEvents()).thenReturn(list);
-                mockMvc.perform(get("/event").contentType(MediaType.APPLICATION_JSON_UTF8))
-                        .andExpect(jsonPath("$.[0].name", is("id")))
+        mockMvc.perform(get("/event/list").contentType(MediaType.APPLICATION_JSON_UTF8))
 
-                        //Array now,  but wait for Json Object
-                        //.andExpect(MockMvcResultMatchers.jsonPath("$.name").value(expectedData))
-                        .andExpect(status().isOk());
+                //  .andExpect(jsonPath("$.[0].name", is("Conference No.1")))
+                .andDo(print())
+                //.andExpect(jsonPath("$.links[7]").exists())
 
+
+                //Array now,  but wait for Json Object
+                //.andExpect(MockMvcResultMatchers.jsonPath("$.name").value(expectedData))
+                .andExpect(status().isOk());
 
 
     }
@@ -71,18 +74,12 @@ public class EventControllerTest0 {
         ArrayList<Speech> list = new ArrayList<>();
         list.add(new Speech("ID"));
         list.add(new Speech("ID"));
-       /* when(createEventControllerMock.getEventSpeeches("eventID")).thenReturn(list);
-        mockMvc.perform(get("/event/ID"))
-                .andExpect(status().isOk());*/
-                //.andExpect(model().attribute("ID", list));
-                //.andExpect(view().name("event/ID"));
+        when(createEventControllerMock.getSpeechesForEvent("eventID")).thenReturn(list);
+        mockMvc.perform(get("/event/ID/speeches"))
+                .andExpect(status().isOk());
+        //.andExpect(model().attribute("ID", list));
+        //.andExpect(view().name("event/ID"));
+    }
 }
 
 
-
-
-
-
-
-
-}

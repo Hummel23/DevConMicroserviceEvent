@@ -2,7 +2,9 @@ package com.senacor.controller;
 
 import com.senacor.model.Event;
 import com.senacor.model.Speech;
+import com.senacor.model.User;
 import com.senacor.service.EventService;
+import com.senacor.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,18 +23,24 @@ public class EventController {
     @Autowired
     private EventService eventService;
 
+    @Autowired
+    private UserService userService;
+
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public Iterable<Event> listAllEvents() {
         return eventService.listAllEvents();
     }
 
-    @RequestMapping(value="/currentEvent", method = RequestMethod.GET)
-    public void getCurrentEvent(HttpServletResponse response){
-        Event event = eventService.getCurrentEvent();
-        try {
-            response.sendRedirect("http://localhost:8080/event/" + event.getEventId());
-        } catch (Exception e) {
-            e.printStackTrace();
+    @RequestMapping(value="/login", method = RequestMethod.POST)
+    public void login(@RequestBody User user, HttpServletResponse response){
+        boolean isValidUser = userService.authenticateUser(user);
+        if(isValidUser) {
+            Event event = eventService.getCurrentEvent();
+            try {
+                response.sendRedirect("http://localhost:8080/event/" + event.getEventId());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
 
     }

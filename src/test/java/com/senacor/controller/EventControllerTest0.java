@@ -51,7 +51,17 @@ public class EventControllerTest0 {
     @Test
     public void getEvent() throws Exception {
         ArrayList<Event> list = new ArrayList<>();
-        list.add(new Event());
+        Event event1 = new Event();
+        event1.setName("Conference");
+        event1.setPlace("Berlin");
+        Speech speech1 = new Speech(event1.getEventId());
+        Speech speech2 = new Speech(event1.getEventId());
+        event1.getSpeeches().add(speech1);
+        event1.getSpeeches().add(speech2);
+        list.add(event1);
+        Event event2 = new Event();
+        event2.setName("Conference2");
+        list.add(event2);
         list.add(new Event());
         String expectedData = "Conference No.1";
         when(createEventControllerMock.listAllEvents()).thenReturn(list);

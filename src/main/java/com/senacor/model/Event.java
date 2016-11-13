@@ -1,15 +1,10 @@
 package com.senacor.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.sun.java.accessibility.util.EventID;
-import org.bson.types.ObjectId;
 import org.joda.time.LocalDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.hateoas.Identifiable;
-import org.springframework.hateoas.Link;
 import org.springframework.hateoas.ResourceSupport;
-import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +22,10 @@ public class Event extends ResourceSupport implements Comparable<Event>{
 
     private String place;
 
-    //    private LocalDate date;
+    //  To Do Format
+    private LocalDate date;
+
+
     @JsonIgnore
     private List<Speech> speeches;
 
@@ -55,14 +53,13 @@ public class Event extends ResourceSupport implements Comparable<Event>{
         return name;
     }
 
-   /* public LocalDate getDate() {
-        return date;
+   public LocalDate getDate() {
+        return LocalDate.parse(date.toString());
     }
 
     public void setDate(LocalDate date) {
         this.date = date;
-    }*/
-
+    }
     public List<Speech> getSpeeches() {
         return speeches;
     }
@@ -76,9 +73,14 @@ public class Event extends ResourceSupport implements Comparable<Event>{
     }
 
 
+
+
     @Override
     public int compareTo(Event event) {
-        // return this.getDate().compareTo(event.getDate());
-        return 0;
+        return this.getDate().compareTo(event.getDate());
+
     }
+
+
+
 }

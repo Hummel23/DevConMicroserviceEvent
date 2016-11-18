@@ -1,5 +1,6 @@
 package com.senacor.controller;
 
+
 import com.senacor.model.Event;
 import com.senacor.model.Speech;
 import com.senacor.service.EventService;
@@ -14,9 +15,12 @@ import org.springframework.web.servlet.View;
 
 import java.util.ArrayList;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.Matchers.nullValue;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
@@ -50,6 +54,7 @@ public class EventControllerTest0 {
 
     @Test
     public void getEvent() throws Exception {
+
         ArrayList<Event> list = new ArrayList<>();
         Event event1 = new Event();
         event1.setName("Conference");
@@ -63,18 +68,21 @@ public class EventControllerTest0 {
         event2.setName("Conference2");
         list.add(event2);
         list.add(new Event());
-        String expectedData = "Conference No.1";
+
         when(createEventControllerMock.listAllEvents()).thenReturn(list);
         mockMvc.perform(get("/event/list").contentType(MediaType.APPLICATION_JSON_UTF8))
 
-                //  .andExpect(jsonPath("$.[0].name", is("Conference No.1")))
+
                 .andDo(print())
-                //.andExpect(jsonPath("$.links[7]").exists())
+                .andExpect(jsonPath("$.[0].place").value("Berlin"))
+                .andExpect(jsonPath("$.[1].name").value("Conference2"))
+                .andExpect(jsonPath("$.[1].place", is(event2.getPlace())))
+                .andExpect(jsonPath("$[0].name", is(event1.getName())))
+                .andExpect(jsonPath("$[0]eventId", is(nullValue())))
+                .andExpect(jsonPath("$[0].links").exists())
 
-
-                //Array now,  but wait for Json Object
-                //.andExpect(MockMvcResultMatchers.jsonPath("$.name").value(expectedData))
                 .andExpect(status().isOk());
+
 
 
     }

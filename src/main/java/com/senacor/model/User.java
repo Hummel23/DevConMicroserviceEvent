@@ -1,15 +1,19 @@
 package com.senacor.model;
 
-import org.springframework.data.annotation.Id;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by Marynasuprun on 07.11.2016.
  */
 public class User {
 
-    private String userId;
-    private String loginName;
+
+
+    private String username;
     private String password;
+
     private String firstname;
     private String lastname;
     private String email;
@@ -17,23 +21,36 @@ public class User {
     private String position;
     private String clientServiceTeam;
     private String roleId;
+    private String userId;
+
+
+
+
 
     public User() {
 
     }
-    public User(String loginName, String password) {
-        this.loginName = loginName;
-
-
+    public User(String username, String password) {
+        this.username = username;
         this.password = password;
     }
 
-    public String getLoginName() {
-        return loginName;
+    public User(JSONObject object) {
+        try {
+            this.username = object.getString("username");
+            this.password = object.getString("password");
+        }
+            catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void setLoginName(String loginName) {
-        this.loginName = loginName;
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getFirstname() {
@@ -103,6 +120,7 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
 
 }
 

@@ -6,6 +6,7 @@ import com.senacor.model.User;
 import com.senacor.service.EventService;
 import com.senacor.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -32,22 +33,55 @@ public class EventController {
     }
 
     @RequestMapping(value="/login", method = RequestMethod.POST)
-    public void login(@RequestBody User user, HttpServletResponse response){
-        boolean isValidUser = userService.authenticateUser(user);
-        if(isValidUser) {
-            Event event = eventService.getCurrentEvent();
-            try {
-                response.sendRedirect("http://localhost:8080/event/" + event.getEventId());
-            } catch (Exception e) {
+    public ResponseEntity<User> login(@RequestParam(value = "username", required = false) String username, @RequestParam(value = "password", required=false) String password){
+        System.out.println(username + password);
+        User user = new User(username, password);
+        ResponseEntity<User> response = userService.authenticateUser(user);
+        return response;
+            /*ResponseEntity<User> entity = new ResponseEntity<>(user, HttpStatus.OK);
+            return entity;
+        } else{
+            ResponseEntity<User> entity = new ResponseEntity<>(user, HttpStatus.UNAUTHORIZED);
+            return entity;
+        }*/
+
+/*        User user = new User(username, password);
+        user.setSuccess(false);
+        System.out.println(user.getPassword());
+        System.out.println(user.getUsername());
+        user.setSuccess(userService.authenticateUser(user));
+        return user;*/
+        /*System.out.println(isValidUser);
+        if(isValidUser) {*/
+
+   /*         Event event = eventService.getCurrentEvent();
+            try {*/
+/*
+                response.setHeader("status", "true");
+*/
+/*               response.sendRedirect("http://localhost:8080/event/" + event.getEventId());*/
+            /*} catch (Exception e) {
                 e.printStackTrace();
-            }
-        }
+            }*/
+//        }
 
     }
 
+    @RequestMapping(value="/currentEvent", method = RequestMethod.GET)
+    public void getCurrentEvent(HttpServletResponse response){
+        Event event = eventService.getCurrentEvent();
+        try {
+            response.sendRedirect("http://141.45.208.68:8080/event/" + event.getEventId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     @RequestMapping(value = "/{eventID}", method = RequestMethod.GET)
-        public Event getEvent(@PathVariable("eventID") String eventID){
-        return eventService.getEvent(eventID);
+    public Event getEvent(@PathVariable("eventID") String eventID){
+        Event event = eventService.getEvent(eventID);
+        System.out.println(event.getEventId());
+        return event;
     }
 
     @RequestMapping(value = "/{eventID}/speeches", method = RequestMethod.GET)

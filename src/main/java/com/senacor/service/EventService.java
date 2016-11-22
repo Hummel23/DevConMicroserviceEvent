@@ -69,8 +69,11 @@ public class EventService {
     public Iterable<Event> listAllEvents() {
         List<Event>events = eventRepository.findAll();
         for (Event event : events) {
+            System.out.println(event.getEventId());
             Link selflink = linkTo(EventController.class).slash(event.getEventId()).withSelfRel();
             event.add(selflink);
+            System.out.println(event.getEventId());
+
         }
         return events;
     }

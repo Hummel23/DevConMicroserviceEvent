@@ -27,7 +27,7 @@ public class DevConMicroserviceEventApplication implements CommandLineRunner{
     public void run(String... strings) throws Exception {
 
         eventService.deleteAllEvents();
-        for (int i = 1; i <=1; i++){
+        for (int i = 1; i <=3; i++){
             Event event = new Event();
             event.setName("Conference No." + i);
             event.setPlace("Example Street No. " + i);

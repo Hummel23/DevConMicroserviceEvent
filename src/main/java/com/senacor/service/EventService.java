@@ -30,7 +30,13 @@ public class EventService {
     public Event getCurrentEvent() {
         List<Event> events = eventRepository.findAll();
         Collections.sort(events);
-        return events.get(events.size()-1);
+        Event currentEvent = events.get(events.size() - 1);
+        Link selflink = linkTo(EventController.class).slash(currentEvent.getEventId()).withSelfRel();
+        currentEvent.add(selflink);
+        List<Speech> methodLinkBuilder = methodOn(EventController.class).getSpeechesForEvent(currentEvent.getEventId());
+        Link speechLink = linkTo(methodLinkBuilder).withRel("speeches");
+        currentEvent.add(speechLink);
+        return currentEvent;
     }
 
     public Event getEvent(String eventId) {
@@ -73,7 +79,6 @@ public class EventService {
             Link selflink = linkTo(EventController.class).slash(event.getEventId()).withSelfRel();
             event.add(selflink);
             System.out.println(event.getEventId());
-
         }
         return events;
     }

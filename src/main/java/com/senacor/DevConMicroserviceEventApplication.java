@@ -29,7 +29,7 @@ public class DevConMicroserviceEventApplication implements CommandLineRunner{
     public void run(String... strings) throws Exception {
 
         eventService.deleteAllEvents();
-        for (int i = 1; i <=1; i++){
+        for (int i = 1; i <=6; i++){
             Event event = new Event();
             event.setName("Conference No." + i);
             event.setPlace("Example Street No. " + i);
@@ -44,6 +44,8 @@ public class DevConMicroserviceEventApplication implements CommandLineRunner{
                 Speech speech = new Speech(event.getEventId());
 
                 speech.setSpeaker("speaker: " + j);
+                speech.setSpeechRoom("Room " + j + "00");
+                speech.setSpeechTitle( j + " million reasons to program");
                 speech.setStartTime(LocalTime.of(j, 00));
                 speech.setEndTime(LocalTime.of(j+1, 30));
                 event.getSpeeches().add(speech);

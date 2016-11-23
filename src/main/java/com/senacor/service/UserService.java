@@ -6,6 +6,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -19,21 +20,22 @@ public class UserService {
     RestTemplate restTemplate = new RestTemplate();
 
 
-    public ResponseEntity<User> authenticateUser(User user) {
+    public User authenticateUser(User user) {
         System.out.println("authenticating user");
         HttpEntity<User> entity = new HttpEntity<>(user);
-        user = null;
-        ResponseEntity<User> response = new ResponseEntity<>(user, HttpStatus.UNAUTHORIZED);
+        ResponseEntity<User> responseEntity= restTemplate.exchange(userUri + "auth", HttpMethod.POST, entity, User.class);
+        return responseEntity.getBody();
+/*
+        ResponseEntity<User> response;
         try{
             System.out.println("in try catch block");
-            response =restTemplate.exchange(userUri + "auth", HttpMethod.POST, entity, User.class);
-            System.out.println(response.toString());
-            System.out.println("Response: " + response.getStatusCodeValue());
-            return response;
-        }catch(Exception e){
+            return restTemplate.exchange(userUri + "auth", HttpMethod.POST, entity, User.class);
+        }catch(HttpClientErrorException e){
             e.printStackTrace();
-        }
-        return response;
+            System.out.println(e.getStatusCode());
+            System.out.println(e.getResponseBodyAsString());
+            return null;
+        }*/
 
     }
 }

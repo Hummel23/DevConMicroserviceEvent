@@ -36,9 +36,12 @@ public class EventController {
     @RequestMapping(value="/login", method = RequestMethod.POST)
     public ResponseEntity<User> login(@RequestParam(value = "username", required = false) String username, @RequestParam(value = "password", required=false) String password){
         System.out.println(username + password);
-        User user = new User(username, password);
-        ResponseEntity<User> response = userService.authenticateUser(user);
-        return response;
+        User user = userService.authenticateUser(new User(username, password));
+        if(user != null){
+            return new ResponseEntity<User>(user, HttpStatus.OK);
+        } else{
+            return new ResponseEntity<User>(user, HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @RequestMapping(value="/currentEvent", method = RequestMethod.GET)

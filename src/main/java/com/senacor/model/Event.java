@@ -53,10 +53,10 @@ public class Event extends ResourceSupport implements Comparable<Event>{
         return date;
     }
 
-    public void setDate (String date) {
-        this.date = date.toString();
-}
 
+    public void setDate (String date) {
+        this.date = date;
+}
     public List<Speech> getSpeeches() {
         return speeches;
     }

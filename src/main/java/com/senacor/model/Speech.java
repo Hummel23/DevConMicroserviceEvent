@@ -3,11 +3,7 @@ package com.senacor.model;
 import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-import org.springframework.hateoas.Link;
 import org.springframework.hateoas.ResourceSupport;
-
-import javax.validation.constraints.NotNull;
-import java.time.LocalTime;
 
 @Document
 public class Speech extends ResourceSupport implements Comparable<Speech>{
@@ -15,8 +11,8 @@ public class Speech extends ResourceSupport implements Comparable<Speech>{
     @Id
     private String speechId;
     private String speechTitle;
-    private LocalTime startTime;
-    private LocalTime endTime;
+    private String startTime;
+    private String endTime;
     private String speechRoom;
     private String speaker;
     private String speakerInfo;
@@ -44,19 +40,19 @@ public class Speech extends ResourceSupport implements Comparable<Speech>{
         this.speechTitle = speechTitle;
     }
 
-    public LocalTime getStartTime() {
+    public String getStartTime() {
         return startTime;
     }
 
-    public void setStartTime(LocalTime startTime) {
+    public void setStartTime(String startTime) {
         this.startTime = startTime;
     }
 
-    public LocalTime getEndTime() {
+    public String getEndTime() {
         return endTime;
     }
 
-    public void setEndTime(LocalTime endTime) {
+    public void setEndTime(String endTime) {
         this.endTime = endTime;
     }
 

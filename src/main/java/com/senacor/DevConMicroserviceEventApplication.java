@@ -46,14 +46,24 @@ public class DevConMicroserviceEventApplication implements CommandLineRunner{
                 speech.setSpeaker("speaker: " + j);
                 speech.setSpeechRoom("Room " + j + "00");
                 speech.setSpeechTitle( j + " million reasons to program");
-                speech.setStartTime(LocalTime.of(j, 00));
-                speech.setEndTime(LocalTime.of(j+1, 30));
+
+
+                //DateTimeFormatter format = DateTimeFormat.forPattern("HH:mm");
+
+
+                speech.setStartTime(LocalTime.of(j, 00).toString());
+                speech.setEndTime(LocalTime.of(j+1, 30).toString());
+
+
                 event.getSpeeches().add(speech);
+               // System.out.println("" + speech.getStartTime());
+               // System.out.println("" + speech.getEndTime());
             }
 
             Event stored = eventService.createEvent(event);
             System.out.println(stored.getEventId());
             System.out.println(stored.getDate());
+
 
         }
 

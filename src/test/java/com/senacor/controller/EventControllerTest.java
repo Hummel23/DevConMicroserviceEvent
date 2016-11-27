@@ -5,6 +5,7 @@ import com.senacor.model.Event;
 import com.senacor.model.Speech;
 import com.senacor.service.EventService;
 import com.senacor.service.UserService;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.InjectMocks;
@@ -12,6 +13,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.web.servlet.View;
 
 import java.util.ArrayList;
@@ -79,7 +81,6 @@ public class EventControllerTest {
         when(createEventControllerMock.listAllEvents()).thenReturn(list);
         mockMvc.perform(get("/event/list").contentType(MediaType.APPLICATION_JSON_UTF8))
 
-
                 //.andDo(print())
                 .andExpect(jsonPath("$.[0].place").value("Berlin"))
                 .andExpect(jsonPath("$.[1].name").value("Conference2"))
@@ -89,7 +90,6 @@ public class EventControllerTest {
                 .andExpect(jsonPath("$[0].links").exists())
 
                 .andExpect(status().isOk());
-
 
     }
 
@@ -113,35 +113,44 @@ public class EventControllerTest {
         list.add(event1);
 
                 mockMvc.perform(get("/event/eventID/speeches").contentType(MediaType.APPLICATION_JSON_UTF8))
-                        .andExpect(status().isOk());
-                         // .andDo(print());
+                        .andExpect(status().isOk())
+                        .andDo(print());
                         assertEquals("Nr: 234", speech1.getSpeechRoom());
                         assertEquals("Dr. Obermann", speech1.getSpeaker());
                         assertEquals( new Speech(), speech2);
-
-
             }
 
     @Test
     public void getLogin() throws Exception {
 
-        //ArrayList<User> list = new ArrayList<>();
-
         String username = "Saba";
         String password = "123";
-       // User user = new User("Saba", "123");
+        //User user = userService.authenticateUser(new User(username, password));
 
-        //list.add(user);
+       ResultActions result = mockMvc.perform(
+                post("/event/login")
 
-        mockMvc.perform(post("/event/login").contentType(MediaType.APPLICATION_JSON_UTF8)
-
+                // mockMvc.perform(post("/event/login")
                 .param("username", username)
                 .param("password", password))
-                .andDo(print());
+                 // .andExpect(MockMvcResultMatchers.status().isOk())
 
-               // assertEquals("Saba", user.getUsername());
+                .andDo(print());
+                 Assert.assertNotNull(result);
+
+
 
         }
+
+    @Test
+    public void getCurrentEvent() throws Exception {
+
+        mockMvc.perform(get("/event/currentEvent").contentType(MediaType.APPLICATION_JSON_UTF8))
+                .andExpect(status().isOk())
+                .andDo(print());
+
+
+    }
 
 
 

@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -34,7 +33,8 @@ public class EventController {
     }
 
     @RequestMapping(value="/login", method = RequestMethod.POST)
-    public ResponseEntity<User> login(@RequestParam(value = "username", required = false) String username, @RequestParam(value = "password", required=false) String password){
+    public ResponseEntity<User> login(@RequestParam(value = "username", required = false) String username,
+                                      @RequestParam(value = "password", required=false) String password){
         System.out.println(username + password);
         User user = userService.authenticateUser(new User(username, password));
         if(user != null){

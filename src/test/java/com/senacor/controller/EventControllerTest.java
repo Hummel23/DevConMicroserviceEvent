@@ -3,7 +3,6 @@ package com.senacor.controller;
 
 import com.senacor.model.Event;
 import com.senacor.model.Speech;
-import com.senacor.model.User;
 import com.senacor.service.EventService;
 import com.senacor.service.UserService;
 import org.junit.Before;
@@ -97,7 +96,7 @@ public class EventControllerTest {
     @Test
     public void getEventSpeeches() throws Exception {
 
-       ArrayList<Event> list = new ArrayList<>();
+        ArrayList<Event> list = new ArrayList<>();
         Event event1 = new Event();
         event1.setName("Conference");
         event1.setPlace("Munich");
@@ -116,12 +115,9 @@ public class EventControllerTest {
                 mockMvc.perform(get("/event/eventID/speeches").contentType(MediaType.APPLICATION_JSON_UTF8))
                         .andExpect(status().isOk());
                          // .andDo(print());
-
                         assertEquals("Nr: 234", speech1.getSpeechRoom());
                         assertEquals("Dr. Obermann", speech1.getSpeaker());
                         assertEquals( new Speech(), speech2);
-
-
 
 
             }
@@ -133,19 +129,17 @@ public class EventControllerTest {
 
         String username = "Saba";
         String password = "123";
+       // User user = new User("Saba", "123");
 
-        User user = (new User("Saba", "123"));
         //list.add(user);
 
-        mockMvc.perform(post("/login").contentType(MediaType.APPLICATION_JSON_UTF8)
+        mockMvc.perform(post("/event/login").contentType(MediaType.APPLICATION_JSON_UTF8)
 
                 .param("username", username)
                 .param("password", password))
                 .andDo(print());
 
-                assertEquals("Saba", user.getUsername());
-
-
+               // assertEquals("Saba", user.getUsername());
 
         }
 

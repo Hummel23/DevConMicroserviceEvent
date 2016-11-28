@@ -5,16 +5,10 @@ import com.senacor.model.Event;
 import com.senacor.model.Speech;
 import com.senacor.service.EventService;
 import com.senacor.service.UserService;
-import com.senacor.service.UserService;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.web.servlet.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,16 +16,6 @@ import java.util.List;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.Mockito.*;
-import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.nullValue;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup;
 
 
 /**
@@ -70,7 +54,7 @@ public class EventControllerTest {
         Event event2 = new Event();
         event2.setName("Conference2");
         list.add(event2);
-        list.add(new Event());
+        //list.add(new Event());
 
         when(eventService.listAllEvents()).thenReturn(list);
         List<Event> events = createEventController.listAllEvents();
@@ -101,47 +85,15 @@ public class EventControllerTest {
 
         list.add(event1);
 
-                mockMvc.perform(get("/event/eventID/speeches").contentType(MediaType.APPLICATION_JSON_UTF8))
-                        .andExpect(status().isOk())
-                        .andDo(print());
-                        assertEquals("Nr: 234", speech1.getSpeechRoom());
-                        assertEquals("Dr. Obermann", speech1.getSpeaker());
-                        assertEquals( new Speech(), speech2);
-            }
+        when(eventService.getSpeech(event1.getEventId(), speech1.getSpeechId())).thenReturn(speech1);
+        Speech speech = eventService.getSpeech(event1.getEventId(), speech1.getSpeechId());
 
-    @Test
-    public void getLogin() throws Exception {
-
-        String username = "Saba";
-        String password = "123";
-        //User user = userService.authenticateUser(new User(username, password));
-
-       ResultActions result = mockMvc.perform(
-                post("/event/login")
-
-                // mockMvc.perform(post("/event/login")
-                .param("username", username)
-                .param("password", password))
-                 // .andExpect(MockMvcResultMatchers.status().isOk())
-
-                .andDo(print());
-                 Assert.assertNotNull(result);
+        assertThat(speech1.getSpeaker(), true);
 
 
-
-        }
-
-    @Test
-    public void getCurrentEvent() throws Exception {
-
-        mockMvc.perform(get("/event/currentEvent").contentType(MediaType.APPLICATION_JSON_UTF8))
-                .andExpect(status().isOk())
-                .andDo(print());
-
+        verify(eventService, times(1)).getSpeech(event1.getEventId(), speech1.getSpeechId());
 
     }
-
-
 
 
 }

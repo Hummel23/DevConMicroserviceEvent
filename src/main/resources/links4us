@@ -13,8 +13,6 @@ http://docs.spring.io/spring-batch/trunk/reference/html/testing.html
 Test git
 //https://github.com/spring-projects/spring-test-mvc/blob/master/src/test/java/org/springframework/test/web/server/samples/standalone/resultmatchers/JsonPathAssertionTests.java
 
-// Array test
-https://www.javacodegeeks.com/2013/08/unit-testing-of-spring-mvc-controllers-rest-api.html
 
 // android rest interface
 https://software.intel.com/en-us/articles/accessing-a-rest-based-database-backend-from-an-android-

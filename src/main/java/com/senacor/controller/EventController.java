@@ -38,7 +38,8 @@ public class EventController {
 
     //kommt in den User-Microservice
     @RequestMapping(value="/login", method = RequestMethod.POST)
-    public ResponseEntity<User> login(@RequestParam(value = "username", required = false) String username, @RequestParam(value = "password", required=false) String password){
+    public ResponseEntity<User> login(@RequestParam(value = "username", required = false) String username,
+                                      @RequestParam(value = "password", required=false) String password){
         System.out.println(username + password);
         User user = userService.authenticateUser(new User(username, password));
         if(user != null){

@@ -4,16 +4,14 @@ import com.senacor.controller.EventController;
 import com.senacor.model.Event;
 import com.senacor.model.Speech;
 import com.senacor.repository.EventRepository;
-import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
+import java.sql.Date;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
@@ -28,7 +26,10 @@ public class EventService {
     EventRepository eventRepository;
 
     public Event getCurrentEvent() {
-        List<Event> events = eventRepository.findAll();
+        List<Event> events = eventRepository.findAll()
+                .stream()
+                .sorted((e1, e2) -> Date.valueOf(e1.getDate()).compareTo(Date.valueOf(e2.getDate())))
+                .collect(Collectors.toList());
         Collections.sort(events);
         Event currentEvent = events.get(events.size() - 1);
         Link selflink = linkTo(EventController.class).slash(currentEvent.getEventId()).withSelfRel();
@@ -72,7 +73,7 @@ public class EventService {
         return selectedSpeech;
     }
 
-    public Iterable<Event> listAllEvents() {
+    public List<Event> listAllEvents() {
         List<Event>events = eventRepository.findAll();
         for (Event event : events) {
             System.out.println(event.getEventId());

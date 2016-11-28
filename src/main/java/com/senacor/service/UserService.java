@@ -3,10 +3,8 @@ package com.senacor.service;
 import com.senacor.model.User;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
 /**
@@ -19,7 +17,7 @@ public class UserService {
     final String userUri = "http://localhost:8081/user/";
     RestTemplate restTemplate = new RestTemplate();
 
-
+    //kommt in den User-Service im User-Microservice bzw. geändert werden
     public User authenticateUser(User user) {
         System.out.println("authenticating user");
         HttpEntity<User> entity = new HttpEntity<>(user);

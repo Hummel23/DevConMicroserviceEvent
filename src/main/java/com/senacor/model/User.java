@@ -1,6 +1,7 @@
 package com.senacor.model;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -30,7 +31,7 @@ public class User {
     public User() {
 
     }
-    public User(String username, String password) {
+    public User(@JsonProperty String username, @JsonProperty String password) {
         this.username = username;
         this.password = password;
     }

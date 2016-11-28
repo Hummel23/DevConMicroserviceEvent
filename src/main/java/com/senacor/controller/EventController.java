@@ -10,7 +10,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 /**
@@ -22,33 +21,37 @@ import java.util.List;
 public class EventController {
 
 
-    @Autowired
-    private EventService eventService;
+    private final EventService eventService;
 
     @Autowired
-    private UserService userService;
+    public EventController(EventService eventService, UserService userService) {
+        this.eventService = eventService;
+        this.userService = userService;
+    }
+
+    private final UserService userService;
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
-    public Iterable<Event> listAllEvents() {
+    public List<Event> listAllEvents() {
         return eventService.listAllEvents();
     }
 
+    //kommt in den User-Microservice
     @RequestMapping(value="/login", method = RequestMethod.POST)
     public ResponseEntity<User> login(@RequestParam(value = "username", required = false) String username, @RequestParam(value = "password", required=false) String password){
         System.out.println(username + password);
         User user = userService.authenticateUser(new User(username, password));
         if(user != null){
-            return new ResponseEntity<User>(user, HttpStatus.OK);
+            return new ResponseEntity<>(user, HttpStatus.OK);
         } else{
-            return new ResponseEntity<User>(user, HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(user, HttpStatus.UNAUTHORIZED);
         }
     }
 
     @RequestMapping(value="/currentEvent", method = RequestMethod.GET)
-    public ResponseEntity<Event> getCurrentEvent(){
-        Event event = eventService.getCurrentEvent();
-        ResponseEntity<Event> response = new ResponseEntity<>(event,HttpStatus.OK);
-        return response;
+    //@ResponseStatus(HttpStatus.OK)
+    public Event getCurrentEvent(){
+        return eventService.getCurrentEvent();
     }
 
     @RequestMapping(value = "/{eventID}", method = RequestMethod.GET)
@@ -68,12 +71,15 @@ public class EventController {
         return eventService.getSpeech(eventID, speechID);
     }
 
+    //Speeches anlegen - insertSort beim Post/Put durchführen - comparable Interface bei Speeches wegfallen lassen
+
 /*    //Create Event Object with parameters with http-POST Request
     @RequestMapping(value = "", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
     public void createEvent(@RequestBody Event event) {
         Event createdEvent = new Event();
-        createdEvent.setName(event.getName());
+        createdEvent.setName(event.getName());#
+        createdEvent.setEventId(UUID.randomUUID().toString());
         createdEvent.setPlace(event.getPlace());
         //createdEvent.setDate();
         eventRepository.save(createdEvent);
@@ -90,6 +96,7 @@ public class EventController {
     */
 
     @RequestMapping(value = "/{eventId}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteEvent(@PathVariable("eventId") String eventId) {
         eventService.deleteEvent(eventId);
     }

@@ -8,10 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
-import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
@@ -26,11 +23,11 @@ public class EventService {
     EventRepository eventRepository;
 
     public Event getCurrentEvent() {
-        List<Event> events = eventRepository.findAll()
-                .stream()
+        List<Event> events = eventRepository.findAll();
+                /*.stream()
                 .sorted((e1, e2) -> Date.valueOf(e1.getDate()).compareTo(Date.valueOf(e2.getDate())))
                 .collect(Collectors.toList());
-        Collections.sort(events);
+        Collections.sort(events);*/
         Event currentEvent = events.get(events.size() - 1);
         Link selflink = linkTo(EventController.class).slash(currentEvent.getEventId()).withSelfRel();
         currentEvent.add(selflink);

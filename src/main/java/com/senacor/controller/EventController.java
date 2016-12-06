@@ -2,9 +2,8 @@ package com.senacor.controller;
 
 import com.senacor.model.Event;
 import com.senacor.model.Speech;
-import com.senacor.model.User;
 import com.senacor.service.EventService;
-import com.senacor.service.UserService;
+import com.senacor.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,37 +21,37 @@ public class EventController {
 
 
     private final EventService eventService;
+    private final AuthenticationService authenticationService;
 
     @Autowired
-    public EventController(EventService eventService, UserService userService) {
+    public EventController(EventService eventService, AuthenticationService authenticationService) {
         this.eventService = eventService;
-        this.userService = userService;
+        this.authenticationService = authenticationService;
     }
 
-    private final UserService userService;
+
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public List<Event> listAllEvents() {
         return eventService.listAllEvents();
     }
 
-    //kommt in den User-Microservice
-    @RequestMapping(value="/login", method = RequestMethod.POST)
-    public ResponseEntity<User> login(@RequestParam(value = "username", required = false) String username,
-                                      @RequestParam(value = "password", required=false) String password){
-        System.out.println(username + password);
-        User user = userService.authenticateUser(new User(username, password));
-        if(user != null){
-            return new ResponseEntity<>(user, HttpStatus.OK);
-        } else{
-            return new ResponseEntity<>(user, HttpStatus.UNAUTHORIZED);
-        }
-    }
 
     @RequestMapping(value="/currentEvent", method = RequestMethod.GET)
-    //@ResponseStatus(HttpStatus.OK)
-    public Event getCurrentEvent(){
-        return eventService.getCurrentEvent();
+    public ResponseEntity<Event> getCurrentEvent(@RequestHeader ("Authorization") String tokenId) {
+        System.out.println("in event controller" + tokenId);
+        System.out.println(authenticationService.isAuthenticatedUser(tokenId));
+        if (authenticationService.isAuthenticatedUser(tokenId)) {
+            Event event = eventService.getCurrentEvent();
+            System.out.println(event.getName());
+            return new ResponseEntity<>(eventService.getCurrentEvent(), HttpStatus.OK);
+
+        }else{
+            return new ResponseEntity<>(eventService.getCurrentEvent(), HttpStatus.UNAUTHORIZED);
+
+        }
+
+
     }
 
     @RequestMapping(value = "/{eventID}", method = RequestMethod.GET)

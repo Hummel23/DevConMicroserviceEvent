@@ -1,6 +1,7 @@
 package com.senacor.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.joda.time.LocalDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.hateoas.ResourceSupport;
@@ -21,7 +22,16 @@ public class Event extends ResourceSupport implements Comparable<Event>{
 
     private String place;
 
-    private String date;
+    //TODO dates as localdate
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+    private LocalDate date;
 
 
     @JsonIgnore
@@ -49,14 +59,14 @@ public class Event extends ResourceSupport implements Comparable<Event>{
         return name;
     }
 
-   public String getDate() {
+/*   public String getDate() {
         return date;
     }
 
 
     public void setDate (String date) {
         this.date = date;
-}
+}*/
     public List<Speech> getSpeeches() {
         return speeches;
     }
@@ -72,14 +82,11 @@ public class Event extends ResourceSupport implements Comparable<Event>{
 
     public void setEventId(String eventId) {
         this.eventId = eventId;
+
     }
 
     @Override
     public int compareTo(Event event) {
         return this.getDate().compareTo(event.getDate());
-
     }
-
-
-
 }

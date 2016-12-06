@@ -4,7 +4,7 @@ package com.senacor.controller;
 import com.senacor.model.Event;
 import com.senacor.model.Speech;
 import com.senacor.service.EventService;
-import com.senacor.service.UserService;
+import com.senacor.service.AuthenticationService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
@@ -30,13 +30,13 @@ public class EventControllerTest {
     EventService eventService;
 
     @Mock
-    private UserService userService;
+    private AuthenticationService authenticationService;
 
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        createEventController= new EventController(eventService,userService);
+        createEventController= new EventController(eventService, authenticationService);
     }
 
     @Test

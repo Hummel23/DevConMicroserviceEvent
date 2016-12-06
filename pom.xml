@@ -109,6 +109,12 @@
 			<version>20140107</version>
 		</dependency>
 
+		<dependency>
+			<groupId>com.loopj.android</groupId>
+			<artifactId>android-async-http</artifactId>
+			<version>1.4.4</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

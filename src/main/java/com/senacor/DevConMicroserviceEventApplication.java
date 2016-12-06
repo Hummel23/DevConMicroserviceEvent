@@ -37,7 +37,7 @@ public class DevConMicroserviceEventApplication implements CommandLineRunner{
             LocalDate date = new LocalDate(2016, 9, i);
             DateTimeFormatter fmt = DateTimeFormat.forPattern("dd-MM-yyyy");
             String str = date.toString(fmt);
-            event.setDate(new LocalDate(2016, 9, i).toString(str));
+            event.setDate(new LocalDate(2016, 9, i));
 
             for (int j = 1; j < 5; j++) {
 

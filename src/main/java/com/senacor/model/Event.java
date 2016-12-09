@@ -22,6 +22,9 @@ public class Event extends ResourceSupport implements Comparable<Event>{
 
     private String place;
 
+    private LocalDate date;
+
+
     //TODO dates as localdate
     public LocalDate getDate() {
         return date;
@@ -31,7 +34,6 @@ public class Event extends ResourceSupport implements Comparable<Event>{
         this.date = date;
     }
 
-    private LocalDate date;
 
 
     @JsonIgnore

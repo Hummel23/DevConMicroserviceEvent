@@ -4,6 +4,7 @@ import com.senacor.model.Event;
 import com.senacor.model.Speech;
 import com.senacor.service.EventService;
 import com.senacor.service.AuthenticationService;
+import com.senacor.service.SpeechService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,11 +23,13 @@ public class EventController {
 
     private final EventService eventService;
     private final AuthenticationService authenticationService;
+    private final SpeechService speechService;
 
     @Autowired
-    public EventController(EventService eventService, AuthenticationService authenticationService) {
+    public EventController(EventService eventService, AuthenticationService authenticationService, SpeechService speechService) {
         this.eventService = eventService;
         this.authenticationService = authenticationService;
+        this.speechService = speechService;
     }
 
 
@@ -39,19 +42,13 @@ public class EventController {
 
     @RequestMapping(value="/currentEvent", method = RequestMethod.GET)
     public ResponseEntity<Event> getCurrentEvent(@RequestHeader ("Authorization") String tokenId) {
-        System.out.println("in event controller" + tokenId);
-        System.out.println(authenticationService.isAuthenticatedUser(tokenId));
         if (authenticationService.isAuthenticatedUser(tokenId)) {
-            Event event = eventService.getCurrentEvent();
-            System.out.println(event.getName());
             return new ResponseEntity<>(eventService.getCurrentEvent(), HttpStatus.OK);
 
         }else{
             return new ResponseEntity<>(eventService.getCurrentEvent(), HttpStatus.UNAUTHORIZED);
 
         }
-
-
     }
 
     @RequestMapping(value = "/{eventID}", method = RequestMethod.GET)
@@ -63,12 +60,17 @@ public class EventController {
 
     @RequestMapping(value = "/{eventID}/speeches", method = RequestMethod.GET)
     public List<Speech> getSpeechesForEvent(@PathVariable("eventID") String eventID) {
-        return eventService.getAllSpeechesForEvent(eventID);
+        return speechService.getAllSpeechesForEvent(eventID);
     }
 
     @RequestMapping(value = "/{eventID}/speeches/{speechID}", method = RequestMethod.GET)
     public Speech getSpeech(@PathVariable("eventID") String eventID, @PathVariable("speechID")String speechID){
-        return eventService.getSpeech(eventID, speechID);
+        return speechService.getSpeech(eventID, speechID);
+    }
+
+    @RequestMapping(value = "/{eventID}/speeches/{speechID}", method = RequestMethod.DELETE)
+    public Speech deleteSpeech(@PathVariable("eventID") String eventID, @PathVariable("speechID")String speechID){
+        return speechService.getSpeech(eventID, speechID);
     }
 
     //Speeches anlegen - insertSort beim Post/Put durchführen - comparable Interface bei Speeches wegfallen lassen
@@ -84,16 +86,12 @@ public class EventController {
         //createdEvent.setDate();
         eventRepository.save(createdEvent);
     }*/
-/*    @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateEvent(@PathVariable("id") String id, @RequestBody Event event) {
-        Event existingEvent = eventRepository.findOne(id);
-        existingEvent.setName(event.getName());
-        existingEvent.setPlace(event.getPlace());
-       // existingEvent.setDate(event.getDate());
-        eventRepository.save(existingEvent);
+        eventService.editEvent(event);
     }
-    */
+
 
     @RequestMapping(value = "/{eventId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)

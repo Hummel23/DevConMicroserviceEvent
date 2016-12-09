@@ -8,6 +8,7 @@ import org.springframework.hateoas.ResourceSupport;
 @Document
 public class Speech extends ResourceSupport implements Comparable<Speech>{
 
+
     @Id
     private String speechId;
     private String speechTitle;
@@ -20,7 +21,7 @@ public class Speech extends ResourceSupport implements Comparable<Speech>{
     private String eventID;
 
 
-    /*
+/*
     Objekte werden dann von Werten wie folgt gebildet:LocalDate.of(2012, Month.DECEMBER, 12); // from values
      */
 
@@ -30,6 +31,10 @@ public class Speech extends ResourceSupport implements Comparable<Speech>{
     }
 
     public Speech() {
+    }
+
+    public void setSpeechId(String speechId) {
+        this.speechId = speechId;
     }
 
     public String getSpeechTitle() {
@@ -97,6 +102,9 @@ public class Speech extends ResourceSupport implements Comparable<Speech>{
         return eventID;
     }
 
+    public void setEventID(String eventID) {
+        this.eventID = eventID;
+    }
 
     @Override
     public int compareTo(Speech o) {

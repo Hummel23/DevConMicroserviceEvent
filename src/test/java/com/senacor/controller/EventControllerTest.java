@@ -5,6 +5,7 @@ import com.senacor.model.Event;
 import com.senacor.model.Speech;
 import com.senacor.service.AuthenticationService;
 import com.senacor.service.EventService;
+import com.senacor.service.SpeechService;
 import org.joda.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
@@ -15,12 +16,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import static junit.framework.TestCase.assertEquals;
+import static junit.framework.TestCase.assertTrue;
 import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
-import static org.hamcrest.Matchers.startsWith;
+import static org.hamcrest.Matchers.hasItem;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.*;
 
 /**
@@ -37,11 +39,15 @@ public class EventControllerTest {
     @Mock
     private AuthenticationService authenticationService;
 
+    @Mock
+    SpeechService speechService;
+
+
 
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-        createEventController = new EventController(eventService, authenticationService);
+        createEventController = new EventController(eventService,authenticationService, speechService);
     }
 
     // Test listAllEvents
@@ -69,38 +75,78 @@ public class EventControllerTest {
         assertThat(events, hasItem(event1));
         verify(eventService, times(1)).listAllEvents();
 
+
     }
 
-    //Test getSpeeches for Event
+
+    //Test for getEvent
     @Test
-    public void getEventSpeeches() throws Exception {
+    public void getEvent () throws Exception {
 
         ArrayList<Event> list = new ArrayList<>();
         Event event1 = new Event();
         event1.setName("Conference");
-        event1.setPlace("Munich");
-
-        Speech speech1 = new Speech(event1.getEventId());
-        Speech speech2 = new Speech(event1.getEventId());
-        speech1.setSpeaker("Dr. Obermann");
-        speech1.setSpeechRoom("Nr: 234");
-        event1.getSpeeches().add(speech1);
-        event1.getSpeeches().add(speech2);
+        event1.setPlace("Berlin");
+        event1.setDate(new LocalDate(2017, 6, 1));
         list.add(event1);
 
+        Event event2 = new Event();
+        event2.setPlace("Munich");
+        event2.setDate(new LocalDate(2017, 8, 1));
+        list.add(event2);
 
-        when(eventService.getSpeech(event1.getEventId(), speech1.getSpeechId())).thenReturn(speech1);
-        //initialise new Speech for Test
-        Speech speech = eventService.getSpeech(event1.getEventId(), speech1.getSpeechId());
+        when(eventService.getEvent(event1.getEventId())).thenReturn(event1);
+        Event event=createEventController.getEvent(event1.getEventId());
 
-        assertThat(speech.getSpeaker(), true);
-        assertThat(event1.getSpeeches(), hasSize(2));
-        assertThat(speech.getSpeaker(), startsWith("Dr."));
-        verify(eventService, times(1)).getSpeech(event1.getEventId(), speech1.getSpeechId());
+        assertEquals("Conference", event.getName());
+        assertTrue(event.getPlace()=="Berlin");
+        verify(eventService, times(1)).getEvent(event1.getEventId());
+
 
     }
 
-    // Test CreateEvent
+    //Test for getSpeechesForEvent
+    @Test
+    public void getSpeechesForEvent() throws Exception {
+
+        Event event1 = new Event();
+        event1.setName("Conference");
+        event1.setPlace("Berlin");
+        event1.setDate(new LocalDate(2017, 6, 1));
+        event1.setEventId("Event Id");
+
+        ArrayList<Speech> speeches = new ArrayList<>();
+        Speech speech1= new Speech(event1.getEventId());
+        speech1.setSpeechId("SpeakerId1");
+        speech1.setSpeaker("Dr.Whatson");
+        speeches.add(speech1);
+
+        Speech speech2= new Speech(event1.getEventId());
+        speech2.setSpeechId("SpeakerId2");
+        speech2.setSpeaker("Dr.Bro");
+        speeches.add(speech2);
+
+        event1.setSpeeches(speeches);
+
+
+
+        when(speechService.getAllSpeechesForEvent(event1.getEventId())).thenReturn(speeches);
+        List<Speech> speechesEvent = createEventController.getSpeechesForEvent(event1.getEventId());
+
+        assertThat(speechesEvent, hasSize(2));
+        assertThat(speechesEvent, hasItem(speech1));
+        assertThat(speechesEvent, hasItem(speech2));
+        assertNotNull(speechesEvent);
+        assertTrue(speech1.getSpeaker()=="Dr.Whatson");
+
+        verify(speechService, times(1)).getAllSpeechesForEvent(event1.getEventId());
+
+
+    }
+
+
+
+    // Test for CreateEvent
     @Test
     public void createEvent() throws Exception {
 
@@ -124,10 +170,10 @@ public class EventControllerTest {
 
     }
 
-    //deleteEvent
 
+    // Test for delete Speech
     @Test
-    public void deleteEvent() throws Exception {
+    public void deleteSpeech() throws Exception {
 
         Event event1 = new Event();
         event1.setName("Conference 1");
@@ -136,18 +182,17 @@ public class EventControllerTest {
         event2.setName("Conference 2");
         event2.setEventId(UUID.randomUUID().toString());
 
+        Speech speech1 = new Speech();
+        Speech speech2 = new Speech();
+        event1.getSpeeches().add(speech1);
+        event1.getSpeeches().add(speech2);
 
         when(eventService.getEvent(event1.getEventId())).thenReturn(event1);
         Event event=createEventController.getEvent(event1.getEventId());
+        createEventController.deleteSpeech(event1.getEventId(), speech1.getSpeechId());
 
-       // TODO event should be deleted
-       // eventService.deleteEvent(event.getEventId());
-        createEventController.deleteEvent(event.getEventId());
-
-        verify(eventService, times(1)).getEvent(event.getEventId());
-        verify(eventService, times(1)).deleteEvent(event.getEventId());
-
-        System.out.println("Deleted Event " +event.getEventId());
+        assertNull(speech1.getSpeechId());
+        verify(speechService, times(1)).deleteSpeech(event.getEventId(), speech1.getSpeechId());
 
     }
 

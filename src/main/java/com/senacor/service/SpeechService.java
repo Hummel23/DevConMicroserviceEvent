@@ -21,7 +21,7 @@ public class SpeechService {
     @Autowired
     EventRepository eventRepository;
 
-    public void deleteSpeech(String eventId, String speechId) {
+    /*public void deleteSpeech(String eventId, String speechId) {
         Event event = eventRepository.findByEventId(eventId);
 
         List<Speech> speechList = event.getSpeeches();
@@ -31,6 +31,20 @@ public class SpeechService {
             }
         }
 
+        event.setSpeeches(speechList);
+        eventRepository.save(event);
+    }*/
+
+    public void deleteSpeech(String eventId, String speechId) {
+        Event event = eventRepository.findByEventId(eventId);
+
+        List<Speech> speechList = event.getSpeeches();
+        for(int speech=0; speech<speechList.size(); speech++)
+        {
+            if (speechList.get(speech).equals(speechId)) {
+                speechList.remove(speech);
+            }
+        }
         event.setSpeeches(speechList);
         eventRepository.save(event);
     }
@@ -56,5 +70,6 @@ public class SpeechService {
         Link selflink = linkTo(EventController.class).slash(eventID+"/speeches/" + speechID).withSelfRel();
         selectedSpeech.add(selflink);
         return selectedSpeech;
+
     }
 }

@@ -3,8 +3,8 @@ package com.senacor.controller;
 import com.senacor.model.Event;
 import com.senacor.model.Speech;
 import com.senacor.service.AuthenticationService;
-import com.senacor.service.SpeechService;
 import com.senacor.service.EventService;
+import com.senacor.service.SpeechService;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by saba on 21.10.16.
@@ -70,9 +71,17 @@ public class EventController {
     }
 
     @RequestMapping(value = "/{eventID}/speeches/{speechID}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteSpeech(@PathVariable("eventID") String eventID,@PathVariable("speechID")String speechID ) {
+        speechService.deleteSpeech(eventID, speechID);
+    }
+
+
+
+    /*@RequestMapping(value = "/{eventID}/speeches/{speechID}", method = RequestMethod.DELETE)
     public Speech deleteSpeech(@PathVariable("eventID") String eventID, @PathVariable("speechID")String speechID){
         return speechService.getSpeech(eventID, speechID);
-    }
+    }*/
 
     @RequestMapping(value = "/createEvent", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
@@ -118,8 +127,7 @@ public class EventController {
     @RequestMapping(value = "/{eventId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteEvent(@PathVariable("eventId") String eventId) {
-       eventService.deleteEvent(eventId);
+        eventService.deleteEvent(eventId);
     }
 
 }
-

@@ -21,28 +21,13 @@ public class SpeechService {
     @Autowired
     EventRepository eventRepository;
 
-    /*public void deleteSpeech(String eventId, String speechId) {
-        Event event = eventRepository.findByEventId(eventId);
-
-        List<Speech> speechList = event.getSpeeches();
-        for (Speech speech : speechList) {
-            if (speech.getSpeechId().equals(speechId)) {
-                speechList.remove(speech);
-            }
-        }
-
-        event.setSpeeches(speechList);
-        eventRepository.save(event);
-    }*/
 
     public void deleteSpeech(String eventId, String speechId) {
         Event event = eventRepository.findByEventId(eventId);
-
         List<Speech> speechList = event.getSpeeches();
-        for(int speech=0; speech<speechList.size(); speech++)
-        {
-            if (speechList.get(speech).equals(speechId)) {
-                speechList.remove(speech);
+        for(int i=0; i < speechList.size(); i++) {
+            if (speechList.get(i).getSpeechId().equals(speechId)) {
+                speechList.remove(i);
             }
         }
         event.setSpeeches(speechList);

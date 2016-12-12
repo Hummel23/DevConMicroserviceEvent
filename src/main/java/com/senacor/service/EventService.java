@@ -45,28 +45,6 @@ public class EventService {
         return event;
     }
 
-    public List<Speech> getAllSpeechesForEvent(String eventId) {
-        Event event = eventRepository.findOne(eventId);
-        for (Speech speech: event.getSpeeches()) {
-            Link selflink = linkTo(EventController.class).slash(eventId + "/speeches/" + speech.getSpeechId()).withSelfRel();
-            speech.add(selflink);
-        }
-        return event.getSpeeches();
-    }
-
-    public Speech getSpeech(String eventID, String speechID) {
-        Event event = eventRepository.findOne(eventID);
-        Speech selectedSpeech = new Speech();
-        for (Speech speech : event.getSpeeches()) {
-            if (speech.getSpeechId().equals(speechID)) {
-                selectedSpeech = speech;
-                break;
-            }
-        }
-        Link selflink = linkTo(EventController.class).slash(eventID+"/speeches/" + speechID).withSelfRel();
-        selectedSpeech.add(selflink);
-        return selectedSpeech;
-    }
 
     public List<Event> listAllEvents() {
         List<Event>events = eventRepository.findAll();
@@ -83,6 +61,10 @@ public class EventService {
         return eventRepository.save(event);
     }
 
+    public void editEvent(Event event) {
+        eventRepository.delete(event.getEventId());
+        eventRepository.save(event);
+    }
 
     public void deleteEvent(String eventId) {
         eventRepository.delete(eventId);
@@ -100,11 +82,4 @@ public class EventService {
         return restTemplate.getForObject(speechUri + eventId, List.class);
     }
 
-    public Speech createSpeech(Speech speech) {
-        return restTemplate.postForObject(speechUri + "newSpeech", speech, Speech.class);
-    }
-
-    public List<Speech> getAllSpeeches() {
-        return restTemplate.getForObject(speechUri + "list", List.class);
-    }*/
 }

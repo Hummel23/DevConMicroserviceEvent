@@ -17,7 +17,9 @@ public class Event extends ResourceSupport implements Comparable<Event>{
 
     @Id
     private String eventId;
+
     private String name;
+
     private String place;
     private LocalDate date;
 

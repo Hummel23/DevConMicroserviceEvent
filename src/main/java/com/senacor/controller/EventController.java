@@ -44,20 +44,23 @@ public class EventController {
 
     @RequestMapping(value="/currentEvent", method = RequestMethod.GET)
     public ResponseEntity<Event> getCurrentEvent(@RequestHeader ("Authorization") String tokenId) {
-        if (authenticationService.isAuthenticatedUser(tokenId)) {
+        //if (authenticationService.isAuthenticatedUser(tokenId)) {
             return new ResponseEntity<>(eventService.getCurrentEvent(), HttpStatus.OK);
 
-        }else{
-            return new ResponseEntity<>(eventService.getCurrentEvent(), HttpStatus.UNAUTHORIZED);
+        //}else{
+          //  return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        }
+        //}
     }
 
     @RequestMapping(value = "/{eventID}", method = RequestMethod.GET)
-    public Event getEvent(@PathVariable("eventID") String eventID){
-        Event event = eventService.getEvent(eventID);
-        System.out.println(event.getEventId());
-        return event;
+    public ResponseEntity<Event> getEvent(@RequestHeader ("Authorization") String tokenId, @PathVariable("eventID") String eventID){
+        if (authenticationService.isAuthenticatedUser(tokenId)) {
+            return new ResponseEntity<>(eventService.getEvent(eventID), HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(eventService.getEvent(eventID), HttpStatus.UNAUTHORIZED);
+
+        }
     }
 
     @RequestMapping(value = "/{eventID}/speeches", method = RequestMethod.GET)
@@ -88,6 +91,12 @@ public class EventController {
         createdEvent.setDate(new LocalDate(2017, 8, 1));
         return eventService.createEvent(createdEvent);
 
+    }
+
+    @RequestMapping(value = "/{eventID}/attendees/{userId}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void addAttendeeToEvent(@PathVariable("eventID") String eventID, @PathVariable("userId")String userId){
+        eventService.updateAttendeesList(eventID, userId);
     }
 
     //Speeches anlegen - insertSort beim Post/Put durchführen - comparable Interface bei Speeches wegfallen lassen

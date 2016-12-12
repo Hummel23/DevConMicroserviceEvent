@@ -21,27 +21,18 @@ public class Event extends ResourceSupport implements Comparable<Event>{
     private String name;
 
     private String place;
-
     private LocalDate date;
-
-
-    //TODO dates as localdate
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-
 
     @JsonIgnore
     private List<Speech> speeches;
 
+    @JsonIgnore
+    private List<String> attendees;
+
 
     public Event() {
         this.speeches = new ArrayList<>();
+        this.attendees= new ArrayList<>();
     }
 
     public void setPlace(String place) {
@@ -85,6 +76,23 @@ public class Event extends ResourceSupport implements Comparable<Event>{
     public void setEventId(String eventId) {
         this.eventId = eventId;
 
+    }
+    //TODO dates as localdate
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
+
+    public List<String> getAttendees() {
+        return attendees;
+    }
+
+    public void setAttendees(List<String> attendees) {
+        this.attendees = attendees;
     }
 
     @Override

@@ -8,10 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
@@ -34,6 +32,8 @@ public class EventService {
         List<Speech> methodLinkBuilder = methodOn(EventController.class).getSpeechesForEvent(currentEvent.getEventId());
         Link speechLink = linkTo(methodLinkBuilder).withRel("speeches");
         currentEvent.add(speechLink);
+        List<String>methodLinkBuilder = methodOn(EventController.class).getAttendees()
+        Link addendanceLink = linkTo(methodLinkBuilder)
         return currentEvent;
     }
 
@@ -76,5 +76,29 @@ public class EventService {
         eventRepository.deleteAll();
     }
 
+    public void updateAttendeesList(String eventID, String userId) {
+        Event event = eventRepository.findByEventId(eventID);
+        List<String> attendees = event.getAttendees();
+        boolean attendeeIsRemoved = false;
+        for (int i=0; i<attendees.size(); i++) {
+            if (attendees.get(i).equals(userId)){
+
+                attendees.remove(i);
+                attendeeIsRemoved=true;
+            }
+        }
+        if (!attendeeIsRemoved){
+            attendees.add(userId);
+        }
+        event.setAttendees(attendees);
+        eventRepository.save(event);
+    }
+
+    }
+
+   /* public List <Speech> getSpeechesForEvent(String eventId) {
+        return restTemplate.getForObject(speechUri + eventId, List.class);
+    }
 
 }
+*/

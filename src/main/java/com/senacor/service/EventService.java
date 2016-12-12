@@ -32,6 +32,8 @@ public class EventService {
         List<Speech> methodLinkBuilder = methodOn(EventController.class).getSpeechesForEvent(currentEvent.getEventId());
         Link speechLink = linkTo(methodLinkBuilder).withRel("speeches");
         currentEvent.add(speechLink);
+        List<String>methodLinkBuilder = methodOn(EventController.class).getAttendees()
+        Link addendanceLink = linkTo(methodLinkBuilder)
         return currentEvent;
     }
 

@@ -43,21 +43,24 @@ public class EventController {
 
 
     @RequestMapping(value="/currentEvent", method = RequestMethod.GET)
-    public ResponseEntity<String> getCurrentEvent(@RequestHeader ("Authorization") String tokenId) {
-        if (authenticationService.isAuthenticatedUser(tokenId)) {
-            return new ResponseEntity<>(eventService.getCurrentEvent().getEventId(), HttpStatus.OK);
+    public ResponseEntity<Event> getCurrentEvent(@RequestHeader ("Authorization") String tokenId) {
+        //if (authenticationService.isAuthenticatedUser(tokenId)) {
+            return new ResponseEntity<>(eventService.getCurrentEvent(), HttpStatus.OK);
 
-        }else{
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        //}else{
+          //  return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        }
+        //}
     }
 
     @RequestMapping(value = "/{eventID}", method = RequestMethod.GET)
-    public Event getEvent(@PathVariable("eventID") String eventID){
-        Event event = eventService.getEvent(eventID);
-        System.out.println(event.getEventId());
-        return event;
+    public ResponseEntity<Event> getEvent(@RequestHeader ("Authorization") String tokenId, @PathVariable("eventID") String eventID){
+        if (authenticationService.isAuthenticatedUser(tokenId)) {
+            return new ResponseEntity<>(eventService.getEvent(eventID), HttpStatus.OK);
+        }else{
+            return new ResponseEntity<>(eventService.getEvent(eventID), HttpStatus.UNAUTHORIZED);
+
+        }
     }
 
     @RequestMapping(value = "/{eventID}/speeches", method = RequestMethod.GET)

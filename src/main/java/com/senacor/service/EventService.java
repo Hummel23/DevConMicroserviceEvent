@@ -75,6 +75,22 @@ public class EventService {
     }
 
     public void updateAttendeesList(String eventID, String userId) {
+        Event event = eventRepository.findByEventId(eventID);
+        List<String> attendees = event.getAttendees();
+        boolean attendeeIsRemoved = false;
+        for (int i=0; i<attendees.size(); i++) {
+            if (attendees.get(i).equals(userId)){
+
+                attendees.remove(i);
+                attendeeIsRemoved=true;
+            }
+        }
+        if (!attendeeIsRemoved){
+            attendees.add(userId);
+        }
+        event.setAttendees(attendees);
+        eventRepository.save(event);
+    }
 
     }
 
@@ -83,3 +99,4 @@ public class EventService {
     }
 
 }
+*/

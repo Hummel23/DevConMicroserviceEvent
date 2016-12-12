@@ -8,10 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
 
-import java.sql.Date;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
@@ -92,6 +90,10 @@ public class EventService {
 
     public void deleteAllEvents() {
         eventRepository.deleteAll();
+    }
+
+    public void updateAttendeesList(String eventID, String userId) {
+
     }
 
    /* public List <Speech> getSpeechesForEvent(String eventId) {

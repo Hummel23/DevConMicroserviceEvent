@@ -14,7 +14,7 @@ import java.util.List;
 //@RepositoryRestResource(collectionResourceRel = "event", path = "event")
 public interface EventRepository extends MongoRepository<Event, String> {
 
-    //Event findByEventId(@Param("eventId") String eventId);
+    Event findByEventId(String eventId);
     List<Event> findAllOrderByDate(); //Comparable Interface wieder rausnehmen Event-Klasse
 
     //find all / orderBy nachschlagen - in Mongo direkt sortieren

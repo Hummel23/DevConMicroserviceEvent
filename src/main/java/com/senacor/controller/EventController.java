@@ -100,7 +100,7 @@ public class EventController {
     @RequestMapping(value = "/{eventID}/attendees/{userId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void addAttendeeToEvent(@PathVariable("eventID") String eventID, @PathVariable("userId")String userId){
-        return eventService.updateAttendeesList(eventID, userId);
+        eventService.updateAttendeesList(eventID, userId);
     }
 
     //Speeches anlegen - insertSort beim Post/Put durchführen - comparable Interface bei Speeches wegfallen lassen

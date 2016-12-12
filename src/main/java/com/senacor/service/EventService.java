@@ -92,7 +92,10 @@ public class EventService {
         eventRepository.save(event);
     }
 
+    public boolean checkAttendance(String eventID, String userId) {
+        return true;
     }
+}
 
    /* public List <Speech> getSpeechesForEvent(String eventId) {
         return restTemplate.getForObject(speechUri + eventId, List.class);

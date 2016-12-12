@@ -11,7 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -102,6 +104,16 @@ public class EventController {
     public void addAttendeeToEvent(@PathVariable("eventID") String eventID, @PathVariable("userId")String userId){
         eventService.updateAttendeesList(eventID, userId);
     }
+
+    @RequestMapping(value = "/{eventID}/attendees/{userId}", method = RequestMethod.GET)
+    public Map<String, Boolean> isAttending(@PathVariable("eventID") String eventID, @PathVariable("userId")String userId){
+        return Collections.singletonMap("isAttending",eventService.checkAttendance(eventID, userId));
+    }
+    /*public ResponseEntity<Boolean> isAttending(@PathVariable("eventID") String eventID, @PathVariable("userId")String userId){
+
+        boolean isAttending = eventService.checkAttendance(eventID, userId);
+        return new ResponseEntity<>(isAttending, HttpStatus.OK);
+    }*/
 
     //Speeches anlegen - insertSort beim Post/Put durchführen - comparable Interface bei Speeches wegfallen lassen
     //Create Event Object with parameters with http-POST Request

@@ -43,12 +43,12 @@ public class EventController {
 
 
     @RequestMapping(value="/currentEvent", method = RequestMethod.GET)
-    public ResponseEntity<Event> getCurrentEvent(@RequestHeader ("Authorization") String tokenId) {
+    public ResponseEntity<String> getCurrentEvent(@RequestHeader ("Authorization") String tokenId) {
         if (authenticationService.isAuthenticatedUser(tokenId)) {
-            return new ResponseEntity<>(eventService.getCurrentEvent(), HttpStatus.OK);
+            return new ResponseEntity<>(eventService.getCurrentEvent().getEventId(), HttpStatus.OK);
 
         }else{
-            return new ResponseEntity<>(eventService.getCurrentEvent(), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
         }
     }

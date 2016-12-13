@@ -55,6 +55,7 @@ public class DevConMicroserviceEventApplication implements CommandLineRunner{
                 speech.setEndTime(LocalTime.of(j+1, 30).toString());
 
 
+
                 event.getSpeeches().add(speech);
                // System.out.println("" + speech.getStartTime());
                // System.out.println("" + speech.getEndTime());

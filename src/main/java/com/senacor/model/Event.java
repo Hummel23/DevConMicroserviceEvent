@@ -68,7 +68,7 @@ public class Event extends ResourceSupport implements Comparable<Event>{
         this.speeches = speeches;
     }
 
-    //
+
     public String getEventId() {
       return eventId;
     }

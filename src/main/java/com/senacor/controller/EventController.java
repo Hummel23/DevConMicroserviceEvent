@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 /**
  * Created by saba on 21.10.16.
@@ -22,6 +20,7 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/event")
+//@RequestMapping("/events")
 public class EventController {
 
 
@@ -34,6 +33,7 @@ public class EventController {
         this.authenticationService = authenticationService;
     }
 
+    //@RequestMapping(value = "", method = RequestMethod.GET)
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public List<Event> listAllEvents() {
         return eventService.listAllEvents();
@@ -68,11 +68,10 @@ public class EventController {
     public Event createEvent(@RequestBody (required = false) Event event) {
 
         Event createdEvent = new Event();
-        createdEvent.setName("Conference 10");
-        createdEvent.setEventId(UUID.randomUUID().toString());
-        createdEvent.setPlace("Example Street No. 10");
+        createdEvent.setName("");
+        //createdEvent.setEventId(UUID.randomUUID().toString());
+        createdEvent.setPlace("");
         createdEvent.setDate(new LocalDate(2017, 8, 1));
-
         return eventService.createEvent(createdEvent);
 
     }
@@ -99,15 +98,15 @@ public class EventController {
     } */
 
 
-   /* @RequestMapping(value = "/{eventId}", method = RequestMethod.PUT)
+   /*@RequestMapping(value = "/{eventId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateEvent(@PathVariable("eventId") String eventId,
                             @RequestBody (required=false) Event event) {
-        Event existingEvent = eventRepository.findOne(id);
+        Event existingEvent = eventService.getEvent(eventId);
         existingEvent.setName(event.getName());
         existingEvent.setPlace(event.getPlace());
-        // existingEvent.setDate(event.getDate());
-        eventRepository.save(existingEvent);
+        existingEvent.setDate(event.getDate());
+        //eventRepository.save(existingEvent);
     }*/
 
 

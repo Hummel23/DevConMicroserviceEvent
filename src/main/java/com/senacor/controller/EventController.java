@@ -12,14 +12,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Created by saba on 21.10.16.
  */
 
 @RestController
-@RequestMapping("/events")
+@RequestMapping("/event")
+//@RequestMapping("/events")
 public class EventController {
 
 
@@ -36,7 +36,8 @@ public class EventController {
 
 
 
-    @RequestMapping(value = "", method = RequestMethod.GET)
+    //@RequestMapping(value = "", method = RequestMethod.GET)
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
     public List<Event> listAllEvents() {
         return eventService.listAllEvents();
     }
@@ -86,7 +87,7 @@ public class EventController {
 
         Event createdEvent = new Event();
         createdEvent.setName("");
-        createdEvent.setEventId(UUID.randomUUID().toString());
+        //createdEvent.setEventId(UUID.randomUUID().toString());
         createdEvent.setPlace("");
         createdEvent.setDate(new LocalDate(2017, 8, 1));
         return eventService.createEvent(createdEvent);

@@ -11,7 +11,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 /**
@@ -25,16 +27,12 @@ public class EventController {
 
     private final EventService eventService;
     private final AuthenticationService authenticationService;
-    private final SpeechService speechService;
 
     @Autowired
-    public EventController(EventService eventService, AuthenticationService authenticationService, SpeechService speechService) {
+    public EventController(EventService eventService, AuthenticationService authenticationService) {
         this.eventService = eventService;
         this.authenticationService = authenticationService;
-        this.speechService = speechService;
     }
-
-
 
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public List<Event> listAllEvents() {
@@ -44,47 +42,26 @@ public class EventController {
 
     @RequestMapping(value="/currentEvent", method = RequestMethod.GET)
     public ResponseEntity<Event> getCurrentEvent(@RequestHeader ("Authorization") String tokenId) {
-        //if (authenticationService.isAuthenticatedUser(tokenId)) {
+        if (authenticationService.isAuthenticatedUser(tokenId)) {
             return new ResponseEntity<>(eventService.getCurrentEvent(), HttpStatus.OK);
 
-        //}else{
-          //  return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        }else{
+           return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
-        //}
+        }
     }
 
     @RequestMapping(value = "/{eventID}", method = RequestMethod.GET)
     public ResponseEntity<Event> getEvent(@RequestHeader ("Authorization") String tokenId, @PathVariable("eventID") String eventID){
         if (authenticationService.isAuthenticatedUser(tokenId)) {
-            return new ResponseEntity<>(eventService.getEvent(eventID), HttpStatus.OK);
+            String userId = authenticationService.getUserId(tokenId);
+            return new ResponseEntity<>(eventService.getEvent(eventID, userId), HttpStatus.OK);
         }else{
-            return new ResponseEntity<>(eventService.getEvent(eventID), HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
         }
     }
 
-    @RequestMapping(value = "/{eventID}/speeches", method = RequestMethod.GET)
-    public List<Speech> getSpeechesForEvent(@PathVariable("eventID") String eventID) {
-        return speechService.getAllSpeechesForEvent(eventID);
-    }
-
-    @RequestMapping(value = "/{eventID}/speeches/{speechID}", method = RequestMethod.GET)
-    public Speech getSpeech(@PathVariable("eventID") String eventID, @PathVariable("speechID")String speechID){
-        return speechService.getSpeech(eventID, speechID);
-    }
-
-    @RequestMapping(value = "/{eventID}/speeches/{speechID}", method = RequestMethod.DELETE)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteSpeech(@PathVariable("eventID") String eventID,@PathVariable("speechID")String speechID ) {
-        speechService.deleteSpeech(eventID, speechID);
-    }
-
-
-
-    /*@RequestMapping(value = "/{eventID}/speeches/{speechID}", method = RequestMethod.DELETE)
-    public Speech deleteSpeech(@PathVariable("eventID") String eventID, @PathVariable("speechID")String speechID){
-        return speechService.getSpeech(eventID, speechID);
-    }*/
 
     @RequestMapping(value = "/createEvent", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
@@ -100,13 +77,14 @@ public class EventController {
 
     }
 
-    @RequestMapping(value = "/{eventID}/attendees/{userId}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/{eventId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void addAttendeeToEvent(@PathVariable("eventID") String eventID, @PathVariable("userId")String userId){
-        eventService.updateAttendeesList(eventID, userId);
+    public void deleteEvent(@PathVariable("eventId") String eventId, @RequestHeader ("Authorization") String tokenId) {
+        if (authenticationService.isAuthenticatedUser(tokenId)) {
+            eventService.deleteEvent(eventId);
+        }
     }
 
-    //Speeches anlegen - insertSort beim Post/Put durchführen - comparable Interface bei Speeches wegfallen lassen
     //Create Event Object with parameters with http-POST Request
 
     /*@RequestMapping(value = "", method = RequestMethod.POST)
@@ -133,10 +111,5 @@ public class EventController {
     }*/
 
 
-    @RequestMapping(value = "/{eventId}", method = RequestMethod.DELETE)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteEvent(@PathVariable("eventId") String eventId) {
-        eventService.deleteEvent(eventId);
-    }
 
 }

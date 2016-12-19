@@ -27,4 +27,10 @@ public class AuthenticationService {
        }
 
     }
+
+    public String getUserId(String tokenId) {
+        ResponseEntity<String> response = restTemplate.getForEntity(userUri + "getUserId/" + tokenId, String.class);
+        System.out.println(response.getBody());
+        return response.getBody();
+    }
 }

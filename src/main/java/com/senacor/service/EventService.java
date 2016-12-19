@@ -1,6 +1,8 @@
 package com.senacor.service;
 
+import com.senacor.controller.AttendanceController;
 import com.senacor.controller.EventController;
+import com.senacor.controller.SpeechController;
 import com.senacor.model.Event;
 import com.senacor.model.Speech;
 import com.senacor.repository.EventRepository;
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.methodOn;
@@ -29,19 +32,26 @@ public class EventService {
         Event currentEvent = events.get(events.size() - 1);
         Link selflink = linkTo(EventController.class).slash(currentEvent.getEventId()).withSelfRel();
         currentEvent.add(selflink);
-        List<Speech> methodLinkBuilder = methodOn(EventController.class).getSpeechesForEvent(currentEvent.getEventId());
+        /* List<Speech> methodLinkBuilder = methodOn(EventController.class).getSpeechesForEvent(currentEvent.getEventId());
         Link speechLink = linkTo(methodLinkBuilder).withRel("speeches");
         currentEvent.add(speechLink);
+        Map<String, Boolean> methodLinkBuilder1 = methodOn(EventController.class).getAttendeeStatus(currentEvent.getEventId(), userId);
+        Link attendanceLink = linkTo(methodLinkBuilder).withRel("attendance");
+        currentEvent.add(attendanceLink);*/
+
         return currentEvent;
     }
 
-    public Event getEvent(String eventId) {
+    public Event getEvent(String eventId, String userId) {
         Event event = eventRepository.findOne(eventId);
         Link selflink = linkTo(EventController.class).slash(eventId).withSelfRel();
         event.add(selflink);
-        List<Speech> methodLinkBuilder = methodOn(EventController.class).getSpeechesForEvent(eventId);
+        List<Speech> methodLinkBuilder = methodOn(SpeechController.class).getSpeechesForEvent(eventId);
         Link speechLink = linkTo(methodLinkBuilder).withRel("speeches");
         event.add(speechLink);
+        Map<String, Boolean> methodLinkBuilder1 = methodOn(AttendanceController.class).getAttendeeStatus(event.getEventId(), userId);
+        Link attendanceLink = linkTo(methodLinkBuilder1).withRel("attendance");
+        event.add(attendanceLink);
         return event;
     }
 
@@ -80,20 +90,27 @@ public class EventService {
         boolean attendeeIsRemoved = false;
         for (int i=0; i<attendees.size(); i++) {
             if (attendees.get(i).equals(userId)){
-
+                System.out.println("not attending anymore");
                 attendees.remove(i);
                 attendeeIsRemoved=true;
             }
         }
         if (!attendeeIsRemoved){
+            System.out.println("attending now.");
             attendees.add(userId);
         }
         event.setAttendees(attendees);
         eventRepository.save(event);
     }
 
-    public boolean checkAttendance(String eventID, String userId) {
-        return true;
+    public boolean getAttendeeStatus(String eventID, String userId) {
+        List<String> attendees = eventRepository.findByEventId(eventID).getAttendees();
+        for (int i = 0; i < attendees.size(); i++) {
+            if (attendees.get(i).equals(userId)) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 

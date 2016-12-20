@@ -13,7 +13,7 @@ import java.util.List;
  * Created by saba on 13.12.16.
  */
 @RestController
-@RequestMapping("/event/{eventId}/speeches")
+@RequestMapping("/events/{eventId}/speeches")
 public class SpeechController {
 
     private final SpeechService speechService;
@@ -23,7 +23,7 @@ public class SpeechController {
         this.speechService = speechService;
     }
 
-    @RequestMapping(value = "/", method = RequestMethod.GET)
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public List<Speech> getSpeechesForEvent(@PathVariable(value = "eventId") String eventID) {
         return speechService.getAllSpeechesForEvent(eventID);
     }
@@ -38,6 +38,12 @@ public class SpeechController {
     public void deleteSpeech(@PathVariable(value = "eventId") String eventID,@PathVariable("speechID")String speechID ) {
         speechService.deleteSpeech(eventID, speechID);
     }
+
+    /*@RequestMapping(value = "/createSpeech", method = RequestMethod.POST)
+    @ResponseStatus(HttpStatus.OK)
+    public void createSpeech(@PathVariable(value = "eventId") String eventID, @RequestBody (required = false)Speech speech) {
+        speechService.createSpeech(eventID);
+    }*/
 
     //Speeches anlegen - insertSort beim Post/Put durchführen - comparable Interface bei Speeches wegfallen lassen
 

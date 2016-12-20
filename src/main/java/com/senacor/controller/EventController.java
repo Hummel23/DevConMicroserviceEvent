@@ -1,17 +1,14 @@
 package com.senacor.controller;
 
 import com.senacor.model.Event;
-import com.senacor.model.Speech;
 import com.senacor.service.AuthenticationService;
 import com.senacor.service.EventService;
-import com.senacor.service.SpeechService;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -19,8 +16,8 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/event")
-//@RequestMapping("/events")
+//@RequestMapping("/event")
+@RequestMapping("/events")
 public class EventController {
 
 

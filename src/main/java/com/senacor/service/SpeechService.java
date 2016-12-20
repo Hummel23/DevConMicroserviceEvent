@@ -57,4 +57,16 @@ public class SpeechService {
         return selectedSpeech;
 
     }
+
+    /*public void createSpeech(String eventID){
+        Event event = eventRepository.findOne(eventID);
+        Speech speech = new Speech();
+        speech.setSpeechId("hi");
+        speech.setSpeechTitle("Sooo good!");
+        speech.setEndTime("20.00");
+        Link selflink = linkTo(EventController.class).slash(eventID + "/speeches/" + speech.getSpeechId()).withSelfRel();
+        speech.add(selflink);
+        event.getSpeeches();
+        eventRepository.save(event);
+    }*/
 }

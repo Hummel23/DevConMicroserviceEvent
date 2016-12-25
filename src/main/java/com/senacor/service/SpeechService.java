@@ -55,6 +55,29 @@ public class SpeechService {
         Link selflink = linkTo(EventController.class).slash(eventID+"/speeches/" + speechID).withSelfRel();
         selectedSpeech.add(selflink);
         return selectedSpeech;
-
     }
+
+    public Speech addSpeech(String eventId, Speech speech) {
+        System.out.println("in speechservice: add speech method");
+        Event event = eventRepository.findByEventId(eventId);
+        speech.setEventID(eventId);
+        List<Speech>speeches = event.getSpeeches();
+        speeches.add(speech);
+        event.setSpeeches(speeches);
+        eventRepository.save(event);
+        return speech;
+    }
+
+    /*private List<Speech> insertSorted(List<Speech> speeches, Speech addedSpeech) {
+        int index = 0;
+        for (Speech speech : speeches) {
+           if(speech.getStartTime().getHour()> addedSpeech.getStartTime().getHour()){
+               speeches.add(index, addedSpeech);
+               break;
+           }else{
+               index ++;
+           }
+        }
+        return speeches;
+    }*/
 }

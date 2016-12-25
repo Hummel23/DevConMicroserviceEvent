@@ -12,7 +12,7 @@ import java.util.Map;
  * Created by saba on 13.12.16.
  */
 @RestController
-@RequestMapping("/event/{eventID}/attendees")
+@RequestMapping("/events/{eventID}/attendees")
 public class AttendanceController {
 
     private final EventService eventService;

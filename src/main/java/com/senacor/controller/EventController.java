@@ -19,8 +19,7 @@ import java.util.List;
  */
 
 @RestController
-@RequestMapping("/event")
-//@RequestMapping("/events")
+@RequestMapping("/events")
 public class EventController {
 
 
@@ -33,8 +32,7 @@ public class EventController {
         this.authenticationService = authenticationService;
     }
 
-    //@RequestMapping(value = "", method = RequestMethod.GET)
-    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    @RequestMapping(value = "", method = RequestMethod.GET)
     public List<Event> listAllEvents() {
         return eventService.listAllEvents();
     }

@@ -11,6 +11,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+
 import java.time.LocalTime;
 
 
@@ -51,8 +52,8 @@ public class DevConMicroserviceEventApplication implements CommandLineRunner{
                 //DateTimeFormatter format = DateTimeFormat.forPattern("HH:mm");
 
 
-                speech.setStartTime(LocalTime.of(j, 00).toString());
-                speech.setEndTime(LocalTime.of(j+1, 30).toString());
+                speech.setStartTime(LocalTime.of(j, 0));
+                speech.setEndTime(LocalTime.of(j+1, 0));
 
 
 

@@ -5,11 +5,9 @@ import com.senacor.model.Speech;
 import com.senacor.service.SpeechService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Created by saba on 13.12.16.

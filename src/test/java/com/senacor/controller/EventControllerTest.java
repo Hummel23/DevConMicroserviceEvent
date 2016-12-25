@@ -22,7 +22,6 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hibernate.validator.internal.util.Contracts.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.mockito.Mockito.*;
 
 /**
@@ -47,7 +46,8 @@ public class EventControllerTest {
     @Before
     public void setUp() {
         MockitoAnnotations.initMocks(this);
-       // createEventController = new EventController(eventService,authenticationService, speechService);
+       createEventController = new EventController(eventService,authenticationService);
+
     }
 
     // Test listAllEvents
@@ -152,7 +152,7 @@ public class EventControllerTest {
 
         Event event1 = new Event();
         event1.setName("Conference 20");
-        event1.setEventId(UUID.randomUUID().toString());
+        //event1.setEventId(UUID.randomUUID().toString());
         event1.setPlace("Example Street No. 20");
         event1.setDate(new LocalDate(2017, 6, 1));
 

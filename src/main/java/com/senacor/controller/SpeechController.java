@@ -47,6 +47,13 @@ public class SpeechController {
         return speechService.addSpeech(eventID, speech);
     }
 
+    @RequestMapping(value = "/{speechId}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.OK)
+    public Speech editSpeech(@PathVariable(value = "eventId") String eventID, @RequestBody Speech speech) {
+        System.out.println("speechcontroller: in editspeech method");
+        return speechService.editSpeech(eventID, speech);
+    }
+
 
     //Speeches anlegen - insertSort beim Post/Put durchführen - comparable Interface bei Speeches wegfallen lassen
 

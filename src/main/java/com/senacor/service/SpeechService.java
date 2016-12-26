@@ -68,6 +68,40 @@ public class SpeechService {
         return speech;
     }
 
+    public Speech editSpeech(String eventID, Speech speech) {
+        System.out.println("in speechservice: editSpeech");
+        Event event = eventRepository.findByEventId(eventID);
+        List<Speech> speeches = event.getSpeeches();
+        Speech currentSpeech = null;
+        for (int i = 0; i < speeches.size(); i++) {
+            if (speeches.get(i).getSpeechId().equals(speech.getSpeechId())) {
+                System.out.println("speech found");
+                currentSpeech = speeches.get(i);
+
+                System.out.println("speech removed");
+                speeches.remove(i);
+
+                currentSpeech.setSpeaker(speech.getSpeaker());
+                currentSpeech.setSpeechRoom(speech.getSpeechRoom());
+                currentSpeech.setSpeechTitle(speech.getSpeechTitle());
+                //TODO add start and end time
+
+                System.out.println("adding speech at same position");
+                speeches.add(i, currentSpeech);
+
+                System.out.println("updating speeches of event");
+                event.setSpeeches(speeches);
+
+                System.out.println("saving event");
+                eventRepository.save(event);
+                return currentSpeech;
+            }
+
+        }
+        return null;
+        }
+
+
     /*private List<Speech> insertSorted(List<Speech> speeches, Speech addedSpeech) {
         int index = 0;
         for (Speech speech : speeches) {

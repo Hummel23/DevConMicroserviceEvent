@@ -29,7 +29,6 @@ public class DevConMicroserviceEventApplication implements CommandLineRunner{
     @Override
     public void run(String... strings) throws Exception {
 
-        eventService.deleteAllEvents();
         for (int i = 1; i <=6; i++){
             Event event = new Event();
             event.setName("Conference No." + i);
@@ -44,22 +43,8 @@ public class DevConMicroserviceEventApplication implements CommandLineRunner{
             System.out.println(stored.getEventId());
             System.out.println(stored.getDate());
 
-
         }
 
-/*        for (Event event : eventService.listAllEvents()) {
-            System.out.println(event.getName());
-           // System.out.println(event.getDate());
-            System.out.println(event.getPlace());
-            System.out.println(event.getEventId());
-            for (Speech speech: eventService.getAllSpeechesForEvent(event.getEventId())) {
-                System.out.println(speech.getSpeaker());
-                System.out.println(speech.getStartTime());
-                System.out.println(speech.getEndTime());
-                System.out.println(speech.getSpeechId());
-            }
-
-        }*/
 
     }
 }

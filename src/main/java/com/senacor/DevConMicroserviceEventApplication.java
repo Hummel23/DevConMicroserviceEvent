@@ -28,6 +28,7 @@ public class DevConMicroserviceEventApplication implements CommandLineRunner{
 
     @Override
     public void run(String... strings) throws Exception {
+        eventService.deleteAllEvents();
 
     }
 }

@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by saba on 21.10.16.
@@ -38,23 +39,28 @@ public class EventController {
     }
 
 
-    @RequestMapping(value="/currentEvent", method = RequestMethod.GET)
-    public ResponseEntity<Event> getCurrentEvent(@RequestHeader ("Authorization") String tokenId) {
+    @RequestMapping(value = "/currentEvent", method = RequestMethod.GET)
+    public ResponseEntity<Map<String, String>> getCurrentEvent(@RequestHeader("Authorization") String tokenId) {
         if (authenticationService.isAuthenticatedUser(tokenId)) {
-            return new ResponseEntity<>(eventService.getCurrentEvent(), HttpStatus.OK);
+            Event event = eventService.getCurrentEvent();
+            if (event != null) {
+                return new ResponseEntity<>(Collections.singletonMap("eventId", event.getEventId()), HttpStatus.OK);
+            } else{
+                return new ResponseEntity<>(Collections.singletonMap("eventId", "noEvent"), HttpStatus.OK);
+            }
 
-        }else{
-           return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+        } else {
+            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
         }
     }
 
     @RequestMapping(value = "/{eventID}", method = RequestMethod.GET)
-    public ResponseEntity<Event> getEvent(@RequestHeader ("Authorization") String tokenId, @PathVariable("eventID") String eventID){
+    public ResponseEntity<Event> getEvent(@RequestHeader("Authorization") String tokenId, @PathVariable("eventID") String eventID) {
         if (authenticationService.isAuthenticatedUser(tokenId)) {
             String userId = authenticationService.getUserId(tokenId);
             return new ResponseEntity<>(eventService.getEvent(eventID, userId), HttpStatus.OK);
-        }else{
+        } else {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
 
         }
@@ -63,20 +69,15 @@ public class EventController {
 
     @RequestMapping(value = "/createEvent", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public Event createEvent(@RequestBody (required = false) Event event) {
-
-        Event createdEvent = new Event();
-        createdEvent.setName("");
-        //createdEvent.setEventId(UUID.randomUUID().toString());
-        createdEvent.setPlace("");
-        createdEvent.setDate(new LocalDate(2017, 8, 1));
-        return eventService.createEvent(createdEvent);
-
+    public Map<String, String> createEvent(@RequestBody Event event) {
+        System.out.println("in Eventcontroller, eventId = " + event.getEventId());
+        eventService.addEvent(event);
+        return Collections.singletonMap("eventId", event.getEventId());
     }
 
     @RequestMapping(value = "/{eventId}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteEvent(@PathVariable("eventId") String eventId, @RequestHeader ("Authorization") String tokenId) {
+    public void deleteEvent(@PathVariable("eventId") String eventId, @RequestHeader("Authorization") String tokenId) {
         if (authenticationService.isAuthenticatedUser(tokenId)) {
             eventService.deleteEvent(eventId);
         }
@@ -106,7 +107,6 @@ public class EventController {
         existingEvent.setDate(event.getDate());
         //eventRepository.save(existingEvent);
     }*/
-
 
 
 }

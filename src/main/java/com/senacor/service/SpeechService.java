@@ -60,11 +60,14 @@ public class SpeechService {
     public Speech addSpeech(String eventId, Speech speech) {
         System.out.println("in speechservice: add speech method");
         Event event = eventRepository.findByEventId(eventId);
-        speech.setEventID(eventId);
-        List<Speech>speeches = event.getSpeeches();
-        speeches.add(speech);
-        event.setSpeeches(speeches);
-        eventRepository.save(event);
+        if (event != null) {
+            speech.setEventID(eventId);
+            List<Speech>speeches = event.getSpeeches();
+            speeches.add(speech);
+            event.setSpeeches(speeches);
+            eventRepository.save(event);
+        }
+
         return speech;
     }
 

@@ -1,6 +1,7 @@
 package com.senacor.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.bson.types.ObjectId;
 import org.joda.time.LocalDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -33,6 +34,8 @@ public class Event extends ResourceSupport implements Comparable<Event>{
     public Event() {
         this.speeches = new ArrayList<>();
         this.attendees= new ArrayList<>();
+        this.eventId = ObjectId.get().toString();
+
     }
 
     public void setPlace(String place) {

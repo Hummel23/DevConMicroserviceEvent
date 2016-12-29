@@ -28,18 +28,22 @@ public class EventService {
 
     public Event getCurrentEvent() {
         List<Event> events = eventRepository.findAll();
-        Collections.sort(events);
-        Event currentEvent = events.get(events.size() - 1);
-        Link selflink = linkTo(EventController.class).slash(currentEvent.getEventId()).withSelfRel();
-        currentEvent.add(selflink);
+        if (!events.isEmpty()) {
+            Collections.sort(events);
+            Event currentEvent = events.get(events.size() - 1);
+            Link selflink = linkTo(EventController.class).slash(currentEvent.getEventId()).withSelfRel();
+            currentEvent.add(selflink);
+            return currentEvent;
+        }
+
+        return null;
+
         /* List<Speech> methodLinkBuilder = methodOn(EventController.class).getSpeechesForEvent(currentEvent.getEventId());
         Link speechLink = linkTo(methodLinkBuilder).withRel("speeches");
         currentEvent.add(speechLink);
         Map<String, Boolean> methodLinkBuilder1 = methodOn(EventController.class).getAttendeeStatus(currentEvent.getEventId(), userId);
         Link attendanceLink = linkTo(methodLinkBuilder).withRel("attendance");
         currentEvent.add(attendanceLink);*/
-
-        return currentEvent;
     }
 
     public Event getEvent(String eventId, String userId) {
@@ -67,7 +71,8 @@ public class EventService {
         return events;
     }
 
-    public Event createEvent(Event event) {
+    public Event addEvent(Event event) {
+
         return eventRepository.save(event);
     }
 

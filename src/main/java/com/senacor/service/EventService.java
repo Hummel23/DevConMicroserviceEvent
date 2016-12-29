@@ -29,7 +29,6 @@ public class EventService {
     public Event getCurrentEvent() {
         List<Event> events = eventRepository.findAll();
         if (!events.isEmpty()) {
-            Collections.sort(events);
             Event currentEvent = events.get(events.size() - 1);
             Link selflink = linkTo(EventController.class).slash(currentEvent.getEventId()).withSelfRel();
             currentEvent.add(selflink);

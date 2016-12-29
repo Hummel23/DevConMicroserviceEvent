@@ -1,6 +1,10 @@
 package com.senacor.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.datatype.joda.deser.LocalDateDeserializer;
+import com.fasterxml.jackson.datatype.joda.ser.LocalDateSerializer;
 import org.bson.types.ObjectId;
 import org.joda.time.LocalDate;
 import org.springframework.data.annotation.Id;
@@ -14,7 +18,7 @@ import java.util.List;
  * Created by saba on 21.10.16.
  */
 @Document
-public class Event extends ResourceSupport implements Comparable<Event>{
+public class Event extends ResourceSupport {
 
     @Id
     private String eventId;
@@ -22,6 +26,9 @@ public class Event extends ResourceSupport implements Comparable<Event>{
     private String name;
 
     private String place;
+
+    @JsonDeserialize(using = LocalDateDeserializer.class)
+    @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate date;
 
     @JsonIgnore
@@ -55,14 +62,6 @@ public class Event extends ResourceSupport implements Comparable<Event>{
         return name;
     }
 
-/*   public String getDate() {
-        return date;
-    }
-
-
-    public void setDate (String date) {
-        this.date = date;
-}*/
     public List<Speech> getSpeeches() {
         return speeches;
     }
@@ -80,7 +79,7 @@ public class Event extends ResourceSupport implements Comparable<Event>{
         this.eventId = eventId;
 
     }
-    //TODO dates as localdate
+
     public LocalDate getDate() {
         return date;
     }
@@ -98,8 +97,4 @@ public class Event extends ResourceSupport implements Comparable<Event>{
         this.attendees = attendees;
     }
 
-    @Override
-    public int compareTo(Event event) {
-        return this.getDate().compareTo(event.getDate());
-    }
 }

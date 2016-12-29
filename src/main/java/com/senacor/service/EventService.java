@@ -54,7 +54,7 @@ public class EventService {
 
 
     public List<Event> listAllEvents() {
-        List<Event>events = eventRepository.findAll();
+        List<Event>events = eventRepository.findAllByOrderByDateDesc();
         for (Event event : events) {
             System.out.println(event.getEventId());
             Link selflink = linkTo(EventController.class).slash(event.getEventId()).withSelfRel();

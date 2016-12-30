@@ -5,9 +5,8 @@ import org.bson.types.ObjectId;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.hateoas.ResourceSupport;
-
 import java.time.LocalTime;
-import java.util.UUID;
+
 
 @Document
 public class Speech extends ResourceSupport implements Comparable<Speech>{

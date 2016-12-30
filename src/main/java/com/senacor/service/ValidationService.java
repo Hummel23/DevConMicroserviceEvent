@@ -15,13 +15,8 @@ import java.util.List;
 @Service
 public class ValidationService {
 
-    @Autowired
-    EventRepository eventRepository;
+    public boolean isNotCollidingWithOtherSpeech(Event event, Speech speech) {
 
-
-    public boolean isNotCollidingWithOtherSpeech(Speech speech) {
-
-        Event event = eventRepository.findByEventId(speech.getEventID());
         List<Speech> speeches = event.getSpeeches();
         LocalTime newSpeechStart = speech.getStartTime();
         LocalTime newSpeechEnd = speech.getEndTime();
@@ -32,7 +27,6 @@ public class ValidationService {
                 return false;
             }
         }
-
         return true;
     }
 

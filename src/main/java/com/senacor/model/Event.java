@@ -40,7 +40,7 @@ public class Event extends ResourceSupport {
 
     public Event() {
         this.speeches = new ArrayList<>();
-        this.attendees= new ArrayList<>();
+        this.attendees = new ArrayList<>();
         this.eventId = ObjectId.get().toString();
 
     }
@@ -72,7 +72,7 @@ public class Event extends ResourceSupport {
 
 
     public String getEventId() {
-      return eventId;
+        return eventId;
     }
 
     public void setEventId(String eventId) {
@@ -95,6 +95,31 @@ public class Event extends ResourceSupport {
 
     public void setAttendees(List<String> attendees) {
         this.attendees = attendees;
+    }
+
+    public List<Speech> insertSpeechSorted(Speech addedSpeech) {
+        boolean wasAdded = false;
+        /*if (this.speeches.isEmpty()) {
+            System.out.println("first speech is added");
+            System.out.println(addedSpeech.getStartTime());
+            this.speeches.add(addedSpeech);
+            wasAdded = true;
+        }else {*/
+        for (int i = 0; i < this.speeches.size(); i++) {
+            System.out.println(i + ". round in loop");
+            System.out.println(this.speeches.get(i).getStartTime().isAfter(addedSpeech.getStartTime()));
+            if (this.speeches.get(i).getStartTime().isAfter(addedSpeech.getStartTime())) {
+                this.speeches.add(i, addedSpeech);
+                wasAdded = true;
+                break;
+            }
+        }
+        if (!wasAdded) {
+            this.speeches.add(addedSpeech);
+        }
+//        }
+
+        return this.speeches;
     }
 
 }

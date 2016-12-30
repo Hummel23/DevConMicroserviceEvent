@@ -21,6 +21,9 @@ public class SpeechService {
     @Autowired
     EventRepository eventRepository;
 
+    @Autowired
+    ValidationService validationService;
+
 
     public void deleteSpeech(String eventId, String speechId) {
         Event event = eventRepository.findByEventId(eventId);
@@ -61,60 +64,56 @@ public class SpeechService {
         System.out.println("in speechservice: add speech method");
         Event event = eventRepository.findByEventId(eventId);
         if (event != null) {
-            speech.setEventID(eventId);
-            List<Speech>speeches = event.getSpeeches();
-            speeches.add(speech);
-            event.setSpeeches(speeches);
-            eventRepository.save(event);
+            if(validationService.isNotCollidingWithOtherSpeech(event, speech)){
+                speech.setEventID(eventId);
+                event.insertSpeechSorted(speech);
+                eventRepository.save(event);
+                return speech;
+            }
         }
-
-        return speech;
+        return null;
     }
 
     public Speech editSpeech(String eventID, Speech speech) {
         System.out.println("in speechservice: editSpeech");
         Event event = eventRepository.findByEventId(eventID);
-        List<Speech> speeches = event.getSpeeches();
-        Speech currentSpeech = null;
-        for (int i = 0; i < speeches.size(); i++) {
-            if (speeches.get(i).getSpeechId().equals(speech.getSpeechId())) {
-                System.out.println("speech found");
-                currentSpeech = speeches.get(i);
-
-                System.out.println("speech removed");
-                speeches.remove(i);
-
-                currentSpeech.setSpeaker(speech.getSpeaker());
-                currentSpeech.setSpeechRoom(speech.getSpeechRoom());
-                currentSpeech.setSpeechTitle(speech.getSpeechTitle());
-                //TODO add start and end time
-
-                System.out.println("adding speech at same position");
-                speeches.add(i, currentSpeech);
-
-                System.out.println("updating speeches of event");
-                event.setSpeeches(speeches);
-
-                System.out.println("saving event");
-                eventRepository.save(event);
-                return currentSpeech;
+        if (event != null) {
+            List<Speech> speeches = event.getSpeeches();
+            Speech currentSpeech = null;
+            for (int i = 0; i < speeches.size(); i++) {
+                if (speeches.get(i).getSpeechId().equals(speech.getSpeechId())) {
+                    System.out.println("speech found");
+                    currentSpeech = speeches.get(i);
+                    System.out.println("speech removed");
+                    speeches.remove(i);
+                    event.setSpeeches(speeches);
+                    eventRepository.save(event);
+                    break;
+                }
             }
+            if (currentSpeech != null) {
+                if (validationService.isNotCollidingWithOtherSpeech(event, speech)) {
+                    currentSpeech.setSpeaker(speech.getSpeaker());
+                    currentSpeech.setSpeechRoom(speech.getSpeechRoom());
+                    currentSpeech.setSpeechTitle(speech.getSpeechTitle());
+                    currentSpeech.setStartTime(speech.getStartTime());
+                    currentSpeech.setEndTime(speech.getEndTime());
+                    System.out.println("adding speech at same position");
+                    speeches.add(speech);
 
+                    System.out.println("updating speeches of event");
+                    event.setSpeeches(speeches);
+
+                    System.out.println("saving event");
+                    eventRepository.save(event);
+                    return currentSpeech;
+                }
+            }
         }
+
         return null;
         }
 
 
-    /*private List<Speech> insertSorted(List<Speech> speeches, Speech addedSpeech) {
-        int index = 0;
-        for (Speech speech : speeches) {
-           if(speech.getStartTime().getHour()> addedSpeech.getStartTime().getHour()){
-               speeches.add(index, addedSpeech);
-               break;
-           }else{
-               index ++;
-           }
-        }
-        return speeches;
-    }*/
+
 }

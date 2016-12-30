@@ -1,15 +1,15 @@
 package com.senacor.model;
 
 import org.bson.types.ObjectId;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.hateoas.ResourceSupport;
+
 import java.time.LocalTime;
 
 
 @Document
-public class Speech extends ResourceSupport implements Comparable<Speech>{
+public class Speech extends ResourceSupport{
 
 
     @Id
@@ -110,8 +110,4 @@ public class Speech extends ResourceSupport implements Comparable<Speech>{
         this.eventID = eventID;
     }
 
-    @Override
-    public int compareTo(Speech o) {
-        return 0;
-    }
 }

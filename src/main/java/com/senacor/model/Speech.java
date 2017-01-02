@@ -6,6 +6,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.hateoas.ResourceSupport;
 
 import java.time.LocalTime;
+import java.util.List;
 
 
 @Document
@@ -108,6 +109,23 @@ public class Speech extends ResourceSupport{
 
     public void setEventID(String eventID) {
         this.eventID = eventID;
+    }
+
+    public List<Speech> insertSpeechSorted(List<Speech> speeches) {
+        boolean wasAdded = false;
+        for (int i = 0; i < speeches.size(); i++) {
+            System.out.println(i + ". round in loop");
+            System.out.println(speeches.get(i).getStartTime().isAfter(this.getStartTime()));
+            if (speeches.get(i).getStartTime().isAfter(this.getStartTime())) {
+                speeches.add(i, this);
+                wasAdded = true;
+                break;
+            }
+        }
+        if (!wasAdded) {
+            speeches.add(this);
+        }
+        return speeches;
     }
 
 }

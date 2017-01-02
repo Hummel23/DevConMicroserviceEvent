@@ -97,29 +97,5 @@ public class Event extends ResourceSupport {
         this.attendees = attendees;
     }
 
-    public List<Speech> insertSpeechSorted(Speech addedSpeech) {
-        boolean wasAdded = false;
-        /*if (this.speeches.isEmpty()) {
-            System.out.println("first speech is added");
-            System.out.println(addedSpeech.getStartTime());
-            this.speeches.add(addedSpeech);
-            wasAdded = true;
-        }else {*/
-        for (int i = 0; i < this.speeches.size(); i++) {
-            System.out.println(i + ". round in loop");
-            System.out.println(this.speeches.get(i).getStartTime().isAfter(addedSpeech.getStartTime()));
-            if (this.speeches.get(i).getStartTime().isAfter(addedSpeech.getStartTime())) {
-                this.speeches.add(i, addedSpeech);
-                wasAdded = true;
-                break;
-            }
-        }
-        if (!wasAdded) {
-            this.speeches.add(addedSpeech);
-        }
-//        }
-
-        return this.speeches;
-    }
 
 }

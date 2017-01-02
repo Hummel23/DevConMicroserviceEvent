@@ -15,17 +15,19 @@ import java.util.List;
 @Service
 public class ValidationService {
 
-    public boolean isNotCollidingWithOtherSpeech(Event event, Speech speech) {
+    public boolean isNotCollidingWithOtherSpeech(List<Speech>speeches, Speech speech) {
 
-        List<Speech> speeches = event.getSpeeches();
         LocalTime newSpeechStart = speech.getStartTime();
         LocalTime newSpeechEnd = speech.getEndTime();
 
         for (Speech sp : speeches) {
-            if (!(speechIsBefore(newSpeechStart, newSpeechEnd, sp.getStartTime()) ||
-                    speechIsAfter(newSpeechStart, sp.getEndTime()))) {
-                return false;
+            if (! sp.getSpeechId().equals(speech.getSpeechId())) {
+                if (!(speechIsBefore(newSpeechStart, newSpeechEnd, sp.getStartTime()) ||
+                        speechIsAfter(newSpeechStart, sp.getEndTime()))) {
+                    return false;
+                }
             }
+
         }
         return true;
     }

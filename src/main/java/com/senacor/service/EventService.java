@@ -6,10 +6,15 @@ import com.senacor.controller.SpeechController;
 import com.senacor.model.Event;
 import com.senacor.model.Speech;
 import com.senacor.repository.EventRepository;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
@@ -26,17 +31,35 @@ public class EventService {
     @Autowired
     EventRepository eventRepository;
 
+    @Autowired
+    ValidationService validationService;
+
     public Event getCurrentEvent() {
 
         List<Event> events = eventRepository.findAllByOrderByDateDesc();
         if (!events.isEmpty()) {
-            Event currentEvent = events.get(0);
+            List<Event> withoutPastEvents = getOnlyPresentEvents(events);
+            Event currentEvent = withoutPastEvents.get(withoutPastEvents.size() - 1);
             Link selflink = linkTo(EventController.class).slash(currentEvent.getEventId()).withSelfRel();
             currentEvent.add(selflink);
             return currentEvent;
         }
 
         return null;
+    }
+
+    private List<Event> getOnlyPresentEvents(List<Event> events) {
+        List<Event> presentEvents = new ArrayList<>();
+
+        for (Event event: events) {
+            if (event.getDate().isAfter(LocalDate.now())
+                    || event.getDate().equals(LocalDate.now())) {
+                presentEvents.add(event);
+            }
+        }
+
+        return presentEvents;
+
     }
 
     public Event getEvent(String eventId, String userId) {
@@ -66,7 +89,14 @@ public class EventService {
 
     public Event addEvent(Event event) {
 
-        return eventRepository.save(event);
+        if (validationService.isNotCollidingWithOtherEvent(eventRepository.findAll(), event)) {
+            eventRepository.save(event);
+            System.out.println("in add event, event saved, eventId = " + event.getEventId());
+            Link selflink = linkTo(EventController.class).slash(event.getEventId()).withSelfRel();
+            event.add(selflink);
+            return event;
+        }
+        return null;
     }
 
     public void editEvent(Event event) {

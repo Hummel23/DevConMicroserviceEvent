@@ -7,6 +7,7 @@ import com.senacor.service.EventService;
 import com.senacor.service.SpeechService;
 import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -34,8 +35,13 @@ public class EventController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public List<Event> listAllEvents() {
-        return eventService.listAllEvents();
+    public ResponseEntity<List<Event>> listAllEvents(@RequestHeader("Authorization") String tokenId) {
+        if (authenticationService.isAuthenticatedUser(tokenId)) {
+
+            return new ResponseEntity<List<Event>>(eventService.listAllEvents(), HttpStatus.OK);
+        }else{
+            return new ResponseEntity<List<Event>>(HttpStatus.UNAUTHORIZED);
+        }
     }
 
 
@@ -45,7 +51,7 @@ public class EventController {
             Event event = eventService.getCurrentEvent();
             if (event != null) {
                 return new ResponseEntity<>(Collections.singletonMap("eventId", event.getEventId()), HttpStatus.OK);
-            } else{
+            } else {
                 return new ResponseEntity<>(Collections.singletonMap("eventId", "noEvent"), HttpStatus.OK);
             }
 
@@ -57,6 +63,7 @@ public class EventController {
 
     @RequestMapping(value = "/{eventID}", method = RequestMethod.GET)
     public ResponseEntity<Event> getEvent(@RequestHeader("Authorization") String tokenId, @PathVariable("eventID") String eventID) {
+        //String tokenValidated = authenticationService.isAuthenticatedUser(tokenId);
         if (authenticationService.isAuthenticatedUser(tokenId)) {
             String userId = authenticationService.getUserId(tokenId);
             return new ResponseEntity<>(eventService.getEvent(eventID, userId), HttpStatus.OK);
@@ -68,11 +75,19 @@ public class EventController {
 
 
     @RequestMapping(value = "/createEvent", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    public Map<String, String> createEvent(@RequestBody Event event) {
-        System.out.println("in Eventcontroller, eventId = " + event.getEventId());
-        eventService.addEvent(event);
-        return Collections.singletonMap("eventId", event.getEventId());
+    public ResponseEntity<Event> createEvent(@RequestHeader("Authorization") String tokenId, @RequestBody Event event) {
+        if (authenticationService.isAuthenticatedUser(tokenId)) {
+
+            if (eventService.addEvent(event) != null) {
+                return new ResponseEntity<>(event, HttpStatus.CREATED);
+            } else {
+                HttpHeaders headers = new HttpHeaders();
+                headers.add("409-Status-Reason: ", "Validation failed");
+                return new ResponseEntity(event, headers, HttpStatus.CONFLICT);
+            }
+        } else{
+            return new ResponseEntity<Event>(HttpStatus.UNAUTHORIZED);
+        }
     }
 
     @RequestMapping(value = "/{eventId}", method = RequestMethod.DELETE)

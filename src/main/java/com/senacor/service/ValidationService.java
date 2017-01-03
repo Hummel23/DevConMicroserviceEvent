@@ -40,4 +40,14 @@ public class ValidationService {
     private boolean speechIsAfter(LocalTime newSpeechStart, LocalTime endTime) {
         return newSpeechStart.isAfter(endTime);
     }
+
+    public boolean isNotCollidingWithOtherEvent(List<Event> events, Event event) {
+
+        for (Event e : events) {
+            if (e.getDate().equals(event.getDate())) {
+                return false;
+            }
+        }
+        return true;
+    }
 }

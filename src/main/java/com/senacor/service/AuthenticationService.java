@@ -20,12 +20,15 @@ public class AuthenticationService {
 
    public boolean isAuthenticatedUser(String tokenId) {
        ResponseEntity<String> response = restTemplate.getForEntity(userUri + "validateToken?tokenId=" + tokenId, String.class);
-       if (response.getBody().equals(tokenId)) {
+       if (response.getBody() != null) {
            return true;
-       }else {
+       }else{
            return false;
        }
-
+       /*System.out.println("this is the response body: " + response.getBody());
+       System.out.println(response.getBody());
+       return response.getBody();
+*/
     }
 
     public String getUserId(String tokenId) {

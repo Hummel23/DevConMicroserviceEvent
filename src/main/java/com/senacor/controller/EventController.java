@@ -1,11 +1,8 @@
 package com.senacor.controller;
 
 import com.senacor.model.Event;
-import com.senacor.model.Speech;
 import com.senacor.service.AuthenticationService;
 import com.senacor.service.EventService;
-import com.senacor.service.SpeechService;
-import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -112,16 +109,24 @@ public class EventController {
     } */
 
 
-   /*@RequestMapping(value = "/{eventId}", method = RequestMethod.PUT)
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateEvent(@PathVariable("eventId") String eventId,
+   @RequestMapping(value = "/{eventId}", method = RequestMethod.PUT)
+    public ResponseEntity<Event> updateEvent(@PathVariable("eventId") String eventId, @RequestHeader("Authorization") String tokenId,
                             @RequestBody (required=false) Event event) {
-        Event existingEvent = eventService.getEvent(eventId);
-        existingEvent.setName(event.getName());
-        existingEvent.setPlace(event.getPlace());
-        existingEvent.setDate(event.getDate());
-        //eventRepository.save(existingEvent);
-    }*/
+       if (authenticationService.isAuthenticatedUser(tokenId)) {
+           if (eventService.updateEvent(event) != null) {
+               Event updatedEvent = eventService.updateEvent(event);
+               return new ResponseEntity<Event>(updatedEvent, HttpStatus.OK);
+           }
+           else{
+               HttpHeaders headers = new HttpHeaders();
+               headers.add("409-Status-Reason: ", "Validation failed");
+               return new ResponseEntity(event, headers, HttpStatus.CONFLICT);
+           }
+       }
+       else{
+           return new ResponseEntity<Event>(HttpStatus.UNAUTHORIZED);
+       }
+   }
 
 
 }

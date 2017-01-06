@@ -44,7 +44,7 @@ public class ValidationService {
     public boolean isNotCollidingWithOtherEvent(List<Event> events, Event event) {
 
         for (Event e : events) {
-            if (e.getDate().equals(event.getDate())) {
+            if (e.getDate().equals(event.getDate()) && !(e.getEventId().equals(event.getEventId()))) {
                 return false;
             }
         }

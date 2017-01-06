@@ -111,9 +111,11 @@ public class EventService {
 
     public Event updateEvent(Event event) {
         if (validationService.isNotCollidingWithOtherEvent(eventRepository.findAll(), event)) {
+            System.out.println("eventservice: event will be updated");
             eventRepository.save(event);
             return event;
         } else {
+            System.out.println("eventservice: event seems to be colliding");
             return null;
         }
     }

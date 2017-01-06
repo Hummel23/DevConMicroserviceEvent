@@ -113,8 +113,8 @@ public class EventController {
     public ResponseEntity<Event> updateEvent(@PathVariable("eventId") String eventId, @RequestHeader("Authorization") String tokenId,
                             @RequestBody (required=false) Event event) {
        if (authenticationService.isAuthenticatedUser(tokenId)) {
-           if (eventService.updateEvent(event) != null) {
-               Event updatedEvent = eventService.updateEvent(event);
+           Event updatedEvent = eventService.updateEvent(event);
+           if (updatedEvent != null) {
                return new ResponseEntity<Event>(updatedEvent, HttpStatus.OK);
            }
            else{

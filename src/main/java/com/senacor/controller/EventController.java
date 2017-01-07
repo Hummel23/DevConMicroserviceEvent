@@ -95,19 +95,6 @@ public class EventController {
         }
     }
 
-    //Create Event Object with parameters with http-POST Request
-
-    /*@RequestMapping(value = "", method = RequestMethod.POST)
-    @ResponseStatus(HttpStatus.CREATED)
-    public void createEvent(@RequestBody Event event) {
-        Event createdEvent = new Event();
-        createdEvent.setName(event.getName());
-        createdEvent.setEventId(UUID.randomUUID().toString());
-        createdEvent.setPlace(event.getPlace());
-        //createdEvent.setDate();
-        eventRepository.save(createdEvent);
-    } */
-
 
    @RequestMapping(value = "/{eventId}", method = RequestMethod.PUT)
     public ResponseEntity<Event> updateEvent(@PathVariable("eventId") String eventId, @RequestHeader("Authorization") String tokenId,

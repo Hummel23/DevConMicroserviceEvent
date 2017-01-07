@@ -1,12 +1,15 @@
 package com.senacor.controller;
 
 import com.senacor.service.AttendanceService;
+import com.senacor.service.AuthenticationService;
 import com.senacor.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -17,22 +20,36 @@ import java.util.Map;
 public class AttendanceController {
 
     private final AttendanceService attendanceService;
+    private final AuthenticationService authenticationService;
 
     @Autowired
-    public AttendanceController(AttendanceService attendanceService){
+    public AttendanceController(AttendanceService attendanceService, AuthenticationService authenticationService){
         this.attendanceService = attendanceService;
+        this.authenticationService = authenticationService;
     }
 
     @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Map<String, Boolean> getAttendeeStatus(@PathVariable("eventID") String eventID, @PathVariable("userId")String userId){
-        System.out.println(attendanceService.getAttendeeStatus(eventID, userId));
-        return Collections.singletonMap("isAttending", attendanceService.getAttendeeStatus(eventID, userId));
+    public Map<String, Boolean> getAttendeeStatus(@PathVariable("eventID") String eventID, @PathVariable("userId")String userId,
+                                                  @RequestHeader("Authorization") String tokenId, HttpServletResponse response){
+        if (authenticationService.isAuthenticatedUser(tokenId)) {
+
+            return Collections.singletonMap("isAttending", attendanceService.getAttendeeStatus(eventID, userId));
+        } else{
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            return null;
+
+        }
     }
 
     @RequestMapping(value = "/{userId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void addAttendeeToEvent(@PathVariable("eventID") String eventID, @PathVariable("userId")String userId){
-        attendanceService.updateAttendeesList(eventID, userId);
+    public void addAttendeeToEvent(@PathVariable("eventID") String eventID, @PathVariable("userId")String userId, @RequestHeader("Authorization") String tokenId,
+                                   HttpServletResponse response){
+        if (authenticationService.isAuthenticatedUser(tokenId)) {
+            attendanceService.updateAttendeesList(eventID, userId);
+        }else{
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        }
     }
 }

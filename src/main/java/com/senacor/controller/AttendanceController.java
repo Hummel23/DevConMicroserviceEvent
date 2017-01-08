@@ -30,16 +30,10 @@ public class AttendanceController {
 
     @RequestMapping(value = "/{userId}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public Map<String, Boolean> getAttendeeStatus(@PathVariable("eventID") String eventID, @PathVariable("userId")String userId,
-                                                  @RequestHeader("Authorization") String tokenId, HttpServletResponse response){
-        if (authenticationService.isAuthenticatedUser(tokenId)) {
+    public Map<String, Boolean> getAttendeeStatus(@PathVariable("eventID") String eventID, @PathVariable("userId")String userId){
 
             return Collections.singletonMap("isAttending", attendanceService.getAttendeeStatus(eventID, userId));
-        } else{
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return null;
 
-        }
     }
 
     @RequestMapping(value = "/{userId}", method = RequestMethod.PUT)

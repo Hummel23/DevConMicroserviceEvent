@@ -111,6 +111,8 @@ public class EventService {
 
     public Event updateEvent(Event event) {
         if (validationService.isNotCollidingWithOtherEvent(eventRepository.findAll(), event)) {
+            List<Speech> speechesOfSavedEvent = eventRepository.findByEventId(event.getEventId()).getSpeeches();
+            event.setSpeeches(speechesOfSavedEvent);
             System.out.println("eventservice: event will be updated");
             eventRepository.save(event);
             return event;

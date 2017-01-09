@@ -1,6 +1,7 @@
 package com.senacor.controller;
 
 import com.senacor.model.Event;
+import com.senacor.model.Speech;
 import com.senacor.service.AuthenticationService;
 import com.senacor.service.EventService;
 import org.springframework.beans.factory.annotation.Autowired;

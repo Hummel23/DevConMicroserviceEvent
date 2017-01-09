@@ -32,13 +32,11 @@ public class AttendanceService {
         boolean attendeeIsRemoved = false;
         for (int i=0; i<attendees.size(); i++) {
             if (attendees.get(i).getUserId().equals(userId)){
-                System.out.println("not attending anymore");
                 attendees.remove(i);
                 attendeeIsRemoved=true;
             }
         }
         if (!attendeeIsRemoved){
-            System.out.println("attending now.");
             ResponseEntity<NaturalPerson> response = restTemplate.getForEntity( attendanceUri + userId, NaturalPerson.class);
             attendees.add(response.getBody());
         }

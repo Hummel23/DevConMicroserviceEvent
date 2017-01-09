@@ -11,6 +11,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.hateoas.ResourceSupport;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +19,7 @@ import java.util.List;
  * Created by saba on 21.10.16.
  */
 @Document
-public class Event extends ResourceSupport {
+public class Event extends ResourceSupport implements Serializable {
 
     @Id
     private String eventId;

@@ -1,9 +1,16 @@
 package com.senacor.model;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+import java.io.Serializable;
+
 /**
  * Created by saba on 09.01.17.
  */
+@Document
 public class NaturalPerson {
+
 
     private String naturalPersonId;
     private String firstname;

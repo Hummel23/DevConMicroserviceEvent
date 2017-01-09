@@ -10,11 +10,8 @@ import org.json.JSONObject;
  */
 public class User {
 
-
-
     private String username;
     private String password;
-
     private String firstname;
     private String lastname;
     private String email;
@@ -25,25 +22,8 @@ public class User {
     private String userId;
 
 
-
-
-
     public User() {
 
-    }
-    public User(@JsonProperty String username, @JsonProperty String password) {
-        this.username = username;
-        this.password = password;
-    }
-
-    public User(JSONObject object) {
-        try {
-            this.username = object.getString("username");
-            this.password = object.getString("password");
-        }
-            catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
     public String getUsername() {
@@ -122,6 +102,8 @@ public class User {
         this.password = password;
     }
 
-
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 }
 

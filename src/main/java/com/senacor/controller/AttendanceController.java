@@ -38,12 +38,7 @@ public class AttendanceController {
 
     @RequestMapping(value = "/{userId}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void addAttendeeToEvent(@PathVariable("eventID") String eventID, @PathVariable("userId")String userId, @RequestHeader("Authorization") String tokenId,
-                                   HttpServletResponse response){
-        if (authenticationService.isAuthenticatedUser(tokenId)) {
+    public void addAttendeeToEvent(@PathVariable("eventID") String eventID, @PathVariable("userId")String userId, @RequestHeader("Authorization") String tokenId){
             attendanceService.updateAttendeesList(eventID, userId);
-        }else{
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        }
     }
 }

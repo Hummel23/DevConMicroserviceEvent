@@ -4,16 +4,12 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.joda.deser.LocalDateDeserializer;
-import com.fasterxml.jackson.databind.JsonDeserializer;
-import com.fasterxml.jackson.datatype.joda.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.joda.ser.LocalDateSerializer;
-import com.fasterxml.jackson.datatype.joda.ser.LocalDateTimeSerializer;
 import org.bson.types.ObjectId;
 import org.joda.time.LocalDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.hateoas.ResourceSupport;
-import org.springframework.hateoas.hal.Jackson2HalModule;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,10 +22,10 @@ public class Event extends ResourceSupport {
 
     @Id
     private String eventId;
-
     private String name;
-
     private String place;
+    private String streetAndNumber;
+    private String postalCodeAndCity;
 
     @JsonDeserialize(using = LocalDateDeserializer.class)
     @JsonSerialize(using = LocalDateSerializer.class)
@@ -74,14 +70,12 @@ public class Event extends ResourceSupport {
         this.speeches = speeches;
     }
 
-
     public String getEventId() {
         return eventId;
     }
 
     public void setEventId(String eventId) {
         this.eventId = eventId;
-
     }
 
     public LocalDate getDate() {
@@ -92,6 +86,21 @@ public class Event extends ResourceSupport {
         this.date = date;
     }
 
+    public String getStreetAndNumber() {
+        return streetAndNumber;
+    }
+
+    public void setStreetAndNumber(String streetAndNumber) {
+        this.streetAndNumber = streetAndNumber;
+    }
+
+    public String getPostalCodeAndCity() {
+        return postalCodeAndCity;
+    }
+
+    public void setPostalCodeAndCity(String postalCodeAndCity) {
+        this.postalCodeAndCity = postalCodeAndCity;
+    }
 
     public List<String> getAttendees() {
         return attendees;
@@ -100,6 +109,5 @@ public class Event extends ResourceSupport {
     public void setAttendees(List<String> attendees) {
         this.attendees = attendees;
     }
-
 
 }

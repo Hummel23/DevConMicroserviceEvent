@@ -31,15 +31,15 @@ public class DevConMicroserviceEventApplication implements CommandLineRunner{
     @Override
     public void run(String... strings) throws Exception {
 
-        //eventRepository.deleteAll();
+        eventRepository.deleteAll();
 
 
-   /*     for (Event event :
+       /* for (Event event :
                 eventRepository.findAll()) {
             if(! event.getDate().isAfter(LocalDate.now())){
                 eventRepository.delete(event);
             }
-        }
+        }*/
         Event event = new Event();
         event.setDate(new LocalDate(2015, 03, 02));
         event.setPlace("Berlin");
@@ -60,6 +60,7 @@ public class DevConMicroserviceEventApplication implements CommandLineRunner{
         speech.setEndTime(LocalTime.of(15, 30));
 
         oldestEvent.getSpeeches().add(speech);
-        eventRepository.save(oldestEvent);*/
+        eventRepository.save(oldestEvent);
+        System.out.println("eventservice started");
     }
 }

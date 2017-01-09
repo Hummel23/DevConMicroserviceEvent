@@ -39,7 +39,7 @@ public class Event extends ResourceSupport {
     private List<Speech> speeches;
 
     @JsonIgnore
-    private List<String> attendees;
+    private List<NaturalPerson> attendees;
 
 
     public Event() {
@@ -93,11 +93,11 @@ public class Event extends ResourceSupport {
     }
 
 
-    public List<String> getAttendees() {
+    public List<NaturalPerson> getAttendees() {
         return attendees;
     }
 
-    public void setAttendees(List<String> attendees) {
+    public void setAttendees(List<NaturalPerson> attendees) {
         this.attendees = attendees;
     }
 

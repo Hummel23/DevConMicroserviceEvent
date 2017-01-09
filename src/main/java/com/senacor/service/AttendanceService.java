@@ -1,9 +1,13 @@
 package com.senacor.service;
 
 import com.senacor.model.Event;
+import com.senacor.model.NaturalPerson;
 import com.senacor.repository.EventRepository;
+import org.springframework.beans.factory.NamedBean;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
@@ -14,6 +18,9 @@ import java.util.List;
 public class AttendanceService {
     EventRepository eventRepository;
 
+    final String attendanceUri = "http://localhost:8081/naturalPerson/";
+    RestTemplate restTemplate = new RestTemplate();
+
     @Autowired
     public AttendanceService(EventRepository eventRepository){
         this.eventRepository = eventRepository;
@@ -21,10 +28,10 @@ public class AttendanceService {
 
     public void updateAttendeesList(String eventID, String userId) {
         Event event = eventRepository.findByEventId(eventID);
-        List<String> attendees = event.getAttendees();
+        List<NaturalPerson> attendees = event.getAttendees();
         boolean attendeeIsRemoved = false;
         for (int i=0; i<attendees.size(); i++) {
-            if (attendees.get(i).equals(userId)){
+            if (attendees.get(i).getUserId().equals(userId)){
                 System.out.println("not attending anymore");
                 attendees.remove(i);
                 attendeeIsRemoved=true;
@@ -32,16 +39,17 @@ public class AttendanceService {
         }
         if (!attendeeIsRemoved){
             System.out.println("attending now.");
-            attendees.add(userId);
+            ResponseEntity<NaturalPerson> response = restTemplate.getForEntity( attendanceUri + userId, NaturalPerson.class);
+            attendees.add(response.getBody());
         }
         event.setAttendees(attendees);
         eventRepository.save(event);
     }
 
     public boolean getAttendeeStatus(String eventID, String userId) {
-        List<String> attendees = eventRepository.findByEventId(eventID).getAttendees();
+        List<NaturalPerson> attendees = eventRepository.findByEventId(eventID).getAttendees();
         for (int i = 0; i < attendees.size(); i++) {
-            if (attendees.get(i).equals(userId)) {
+            if (attendees.get(i).getUserId().equals(userId)) {
                 return true;
             }
         }

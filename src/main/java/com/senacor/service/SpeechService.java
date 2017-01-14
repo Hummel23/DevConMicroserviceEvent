@@ -24,6 +24,7 @@ public class SpeechService {
     @Autowired
     ValidationService validationService;
 
+    //TODO inform rating service of updates + delete validation of colliding speeches
 
     public void deleteSpeech(String eventId, String speechId) {
         Event event = eventRepository.findByEventId(eventId);

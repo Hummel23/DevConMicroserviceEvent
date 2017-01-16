@@ -23,6 +23,7 @@ public class RatingService {
     }
 
     public ResponseEntity<Speech> createSpeech(Speech speech) throws MalformedURLException {
+        System.out.println("in create Speech method");
         restTemplate = new RestTemplate();
         HttpEntity<Speech> request = new HttpEntity<>(speech);
         return restTemplate.postForEntity(ratingUri + "/createSpeech", request, Speech.class);
@@ -34,9 +35,9 @@ public class RatingService {
         restTemplate.put(ratingUri + "/editSpeech/" + speech.getSpeechId(), request);
     }
 
-    public void deleteSpeech(Speech speech) throws MalformedURLException {
+    public void deleteSpeech(String speechId) throws MalformedURLException {
         restTemplate = new RestTemplate();
-        restTemplate.delete(ratingUri + "/deleteSpeech/" + speech.getSpeechId());
+        restTemplate.delete(ratingUri + "/deleteSpeech/" + speechId);
     }
 
 }

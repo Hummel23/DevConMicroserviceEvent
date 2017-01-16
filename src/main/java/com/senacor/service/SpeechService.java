@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
 
+import java.net.MalformedURLException;
 import java.util.List;
 
 import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
@@ -18,11 +19,16 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 @Service
 public class SpeechService {
 
-    @Autowired
     EventRepository eventRepository;
+    RatingService ratingService;
+    ValidationService validationService;
 
     @Autowired
-    ValidationService validationService;
+    public SpeechService(EventRepository eventRepository, RatingService ratingService, ValidationService validationService) {
+        this.eventRepository = eventRepository;
+        this.ratingService = ratingService;
+        this.validationService = validationService;
+    }
 
     //TODO inform rating service of updates
 
@@ -35,6 +41,11 @@ public class SpeechService {
             }
         }
         event.setSpeeches(speechList);
+        try {
+            ratingService.deleteSpeech(speechId);
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
         eventRepository.save(event);
     }
 
@@ -65,12 +76,17 @@ public class SpeechService {
         System.out.println("in speechservice: add speech method");
         Event event = eventRepository.findByEventId(eventId);
         if (event != null) {
-                speech.setEventID(eventId);
-                System.out.println(speech.getSpeechId());
-                List<Speech> speeches = speech.insertSpeechSorted(event.getSpeeches());
-                event.setSpeeches(speeches);
-                eventRepository.save(event);
-                return speech;
+            speech.setEventID(eventId);
+            System.out.println(speech.getSpeechId());
+            List<Speech> speeches = speech.insertSpeechSorted(event.getSpeeches());
+            event.setSpeeches(speeches);
+            eventRepository.save(event);
+            try {
+                ratingService.createSpeech(speech);
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            return speech;
         }
         return null;
     }
@@ -84,16 +100,21 @@ public class SpeechService {
             for (int i = 0; i < speeches.size(); i++) {
                 //if speech in speeches has same id as the edited speech-> speech found
                 if (speeches.get(i).getSpeechId().equals(speech.getSpeechId())) {
-                        //remove the old speech
-                        speeches.remove(i);
-                        speech.setEventID(eventID);
-                        //add the edited speech and insert at the right spot
-                        speeches = speech.insertSpeechSorted(speeches);
-                        //add the amended list of speeches to the event
-                        event.setSpeeches(speeches);
-                        //save the event
-                        eventRepository.save(event);
-                        return speech;
+                    //remove the old speech
+                    speeches.remove(i);
+                    speech.setEventID(eventID);
+                    //add the edited speech and insert at the right spot
+                    speeches = speech.insertSpeechSorted(speeches);
+                    //add the amended list of speeches to the event
+                    event.setSpeeches(speeches);
+                    //save the event
+                    eventRepository.save(event);
+                    try {
+                        ratingService.editSpeech(speech);
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    }
+                    return speech;
                 }
             }
         }

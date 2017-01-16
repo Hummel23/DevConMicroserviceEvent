@@ -24,7 +24,7 @@ public class SpeechService {
     @Autowired
     ValidationService validationService;
 
-    //TODO inform rating service of updates + delete validation of colliding speeches
+    //TODO inform rating service of updates
 
     public void deleteSpeech(String eventId, String speechId) {
         Event event = eventRepository.findByEventId(eventId);
@@ -65,14 +65,12 @@ public class SpeechService {
         System.out.println("in speechservice: add speech method");
         Event event = eventRepository.findByEventId(eventId);
         if (event != null) {
-            if (validationService.isNotCollidingWithOtherSpeech(event.getSpeeches(), speech)) {
                 speech.setEventID(eventId);
                 System.out.println(speech.getSpeechId());
                 List<Speech> speeches = speech.insertSpeechSorted(event.getSpeeches());
                 event.setSpeeches(speeches);
                 eventRepository.save(event);
                 return speech;
-            }
         }
         return null;
     }
@@ -86,8 +84,6 @@ public class SpeechService {
             for (int i = 0; i < speeches.size(); i++) {
                 //if speech in speeches has same id as the edited speech-> speech found
                 if (speeches.get(i).getSpeechId().equals(speech.getSpeechId())) {
-                    //validate that the speech is not colliding with another speech
-                    if (validationService.isNotCollidingWithOtherSpeech(speeches, speech)) {
                         //remove the old speech
                         speeches.remove(i);
                         speech.setEventID(eventID);
@@ -98,7 +94,6 @@ public class SpeechService {
                         //save the event
                         eventRepository.save(event);
                         return speech;
-                    }
                 }
             }
         }

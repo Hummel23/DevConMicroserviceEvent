@@ -63,8 +63,8 @@ public class SpeechController {
                 return new ResponseEntity(savedSpeech, HttpStatus.CREATED);
             } else {
                 HttpHeaders headers = new HttpHeaders();
-                headers.add("409-Status-Reason: ", "Validation failed");
-                return new ResponseEntity(speech, headers, HttpStatus.CONFLICT);
+                headers.add("400-Status-Reason: ", "Event could not be found");
+                return new ResponseEntity(speech, headers, HttpStatus.BAD_REQUEST);
             }
         }else{
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
@@ -80,17 +80,13 @@ public class SpeechController {
                 return new ResponseEntity<>(editedSpeech, HttpStatus.OK);
             } else {
                 HttpHeaders headers = new HttpHeaders();
-                headers.add("409-Status-Reason: ", "Validation failed");
+                headers.add("400-Status-Reason: ", "Event could not be found");
                 Link selflink = linkTo(EventController.class).slash(eventID + "/speeches/" + speech.getSpeechId()).withSelfRel();
                 speech.add(selflink);
-                return new ResponseEntity<>(speech, headers, HttpStatus.CONFLICT);
+                return new ResponseEntity(speech, headers, HttpStatus.BAD_REQUEST);
             }
         }else{
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
     }
-
-
-    //Speeches anlegen - insertSort beim Post/Put durchführen - comparable Interface bei Speeches wegfallen lassen
-
 }

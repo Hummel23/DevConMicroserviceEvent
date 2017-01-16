@@ -31,7 +31,7 @@ public class DevConMicroserviceEventApplication implements CommandLineRunner{
     @Override
     public void run(String... strings) throws Exception {
 
-        eventRepository.deleteAll();
+        //eventRepository.deleteAll();
 
 
        /* for (Event event :
@@ -40,7 +40,7 @@ public class DevConMicroserviceEventApplication implements CommandLineRunner{
                 eventRepository.delete(event);
             }
         }*/
-        Event event = new Event();
+       /* Event event = new Event();
         event.setDate(new LocalDate(2015, 03, 02));
         event.setPlace("Berlin");
         event.setName("Event in der Vergangenheit");
@@ -61,6 +61,6 @@ public class DevConMicroserviceEventApplication implements CommandLineRunner{
 
         oldestEvent.getSpeeches().add(speech);
         eventRepository.save(oldestEvent);
-        System.out.println("eventservice started");
+        System.out.println("eventservice started");*/
     }
 }

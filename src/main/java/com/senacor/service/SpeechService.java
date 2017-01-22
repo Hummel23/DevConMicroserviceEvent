@@ -30,7 +30,7 @@ public class SpeechService {
         this.validationService = validationService;
     }
 
-    //TODO inform rating service of updates
+
 
     public void deleteSpeech(String eventId, String speechId) {
         Event event = eventRepository.findByEventId(eventId);
@@ -103,6 +103,7 @@ public class SpeechService {
                     //remove the old speech
                     speeches.remove(i);
                     speech.setEventID(eventID);
+
                     //add the edited speech and insert at the right spot
                     speeches = speech.insertSpeechSorted(speeches);
                     //add the amended list of speeches to the event

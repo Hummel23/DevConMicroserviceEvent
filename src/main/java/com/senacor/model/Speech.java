@@ -24,7 +24,7 @@ public class Speech extends ResourceSupport{
     private String speakerInfo;
     private String speechSummary;
     private String eventID;
-
+    private Integer rating;
 
 /*
     Objekte werden dann von Werten wie folgt gebildet:LocalDate.of(2012, Month.DECEMBER, 12); // from values
@@ -129,4 +129,11 @@ public class Speech extends ResourceSupport{
         return speeches;
     }
 
+    public Integer getRating() {
+        return rating;
+    }
+
+    public void setRating(Integer rating) {
+        this.rating = rating;
+    }
 }

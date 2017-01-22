@@ -35,10 +35,14 @@ public class EventService {
         List<Event> events = eventRepository.findAllByOrderByDateDesc();
         if (!events.isEmpty()) {
             List<Event> withoutPastEvents = getOnlyPresentEvents(events);
-            Event currentEvent = withoutPastEvents.get(withoutPastEvents.size() - 1);
-            Link selflink = linkTo(EventController.class).slash(currentEvent.getEventId()).withSelfRel();
-            currentEvent.add(selflink);
-            return currentEvent;
+            if(!withoutPastEvents.isEmpty()) {
+                Event currentEvent = withoutPastEvents.get(withoutPastEvents.size() - 1);
+                Link selflink = linkTo(EventController.class).slash(currentEvent.getEventId()).withSelfRel();
+                currentEvent.add(selflink);
+                return currentEvent;
+            }else{
+                return events.get(events.size() - 1);
+            }
         }
 
         return null;

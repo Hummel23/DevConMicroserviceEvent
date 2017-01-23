@@ -31,7 +31,7 @@ public class DevConMicroserviceEventApplication implements CommandLineRunner{
     @Override
     public void run(String... strings) throws Exception {
 
-        eventRepository.deleteAll();
+       //eventRepository.deleteAll();
        /* Event event = new Event();
         event.setDate(new LocalDate(2015, 03, 02));
         event.setPlace("Berlin");

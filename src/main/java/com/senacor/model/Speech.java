@@ -24,7 +24,6 @@ public class Speech extends ResourceSupport{
     private String speakerInfo;
     private String speechSummary;
     private String eventID;
-    private Integer rating;
 
 /*
     Objekte werden dann von Werten wie folgt gebildet:LocalDate.of(2012, Month.DECEMBER, 12); // from values
@@ -112,28 +111,4 @@ public class Speech extends ResourceSupport{
         this.eventID = eventID;
     }
 
-    public List<Speech> insertSpeechSorted(List<Speech> speeches) {
-        boolean wasAdded = false;
-        for (int i = 0; i < speeches.size(); i++) {
-            System.out.println(i + ". round in loop");
-            System.out.println(speeches.get(i).getStartTime().isAfter(this.getStartTime()));
-            if (speeches.get(i).getStartTime().isAfter(this.getStartTime())) {
-                speeches.add(i, this);
-                wasAdded = true;
-                break;
-            }
-        }
-        if (!wasAdded) {
-            speeches.add(this);
-        }
-        return speeches;
-    }
-
-    public Integer getRating() {
-        return rating;
-    }
-
-    public void setRating(Integer rating) {
-        this.rating = rating;
-    }
 }

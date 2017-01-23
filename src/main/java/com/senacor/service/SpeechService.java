@@ -78,7 +78,8 @@ public class SpeechService {
         if (event != null) {
             speech.setEventID(eventId);
             System.out.println(speech.getSpeechId());
-            List<Speech> speeches = speech.insertSpeechSorted(event.getSpeeches());
+            List<Speech> speeches = event.getSpeeches();
+            speeches.add(speech);
             event.setSpeeches(speeches);
             eventRepository.save(event);
             try {
@@ -105,7 +106,7 @@ public class SpeechService {
                     speech.setEventID(eventID);
 
                     //add the edited speech and insert at the right spot
-                    speeches = speech.insertSpeechSorted(speeches);
+                    speeches.add(speech);
                     //add the amended list of speeches to the event
                     event.setSpeeches(speeches);
                     //save the event

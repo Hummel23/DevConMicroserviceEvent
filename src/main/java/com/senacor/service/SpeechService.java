@@ -21,13 +21,11 @@ import static org.springframework.hateoas.mvc.ControllerLinkBuilder.linkTo;
 public class SpeechService {
 
     EventRepository eventRepository;
-    RatingService ratingService;
     ValidationService validationService;
 
     @Autowired
-    public SpeechService(EventRepository eventRepository, RatingService ratingService, ValidationService validationService) {
+    public SpeechService(EventRepository eventRepository, ValidationService validationService) {
         this.eventRepository = eventRepository;
-        this.ratingService = ratingService;
         this.validationService = validationService;
     }
 
@@ -42,11 +40,6 @@ public class SpeechService {
             }
         }
         event.setSpeeches(speechList);
-        try {
-            ratingService.deleteSpeech(speechId);
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        }
         eventRepository.save(event);
     }
 
@@ -87,11 +80,6 @@ public class SpeechService {
             speeches.add(speech);
             event.setSpeeches(speeches);
             eventRepository.save(event);
-            try {
-                ratingService.createSpeech(speech);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            }
             return speech;
         }
         return null;
@@ -116,28 +104,9 @@ public class SpeechService {
                     event.setSpeeches(speeches);
                     //save the event
                     eventRepository.save(event);
-                    try {
-                        ratingService.editSpeech(speech);
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    }
                     return speech;
                 }
             }
-        }
-        return null;
-    }
-
-
-    public Speech getSpeechForRating(String speechId) {
-
-        for (Event event:eventRepository.findAll()) {
-            for (Speech speech: event.getSpeeches()) {
-                if (speech.getSpeechId().equals(speechId)) {
-                    return speech;
-                }
-            }
-
         }
         return null;
     }

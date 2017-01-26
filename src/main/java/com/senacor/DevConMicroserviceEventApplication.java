@@ -67,5 +67,17 @@ public class DevConMicroserviceEventApplication implements CommandLineRunner{
         oldestEvent.getSpeeches().add(speech);
         eventRepository.save(oldestEvent);
         System.out.println("eventservice started");*/
+
+       /* Event oldestEvent = eventRepository.findAllByOrderByDateDesc().get(eventRepository.findAll().size()-1);
+
+        Speech speech4 = new Speech();
+        speech4.setSpeechTitle("past speeches cannot be amended");
+        speech4.setStartTime(LocalTime.of(18, 00));
+        speech4.setEndTime(LocalTime.of(19, 30));
+
+        //oldestEvent.getSpeeches().add(speech4);
+        oldestEvent.getSpeeches().clear();
+        eventRepository.save(oldestEvent);*/
+
     }
 }

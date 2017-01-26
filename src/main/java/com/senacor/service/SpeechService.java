@@ -1,5 +1,6 @@
 package com.senacor.service;
 
+import com.senacor.IPAddress;
 import com.senacor.controller.EventController;
 import com.senacor.model.Event;
 import com.senacor.model.Speech;
@@ -54,6 +55,8 @@ public class SpeechService {
         for (Speech speech : event.getSpeeches()) {
             Link selflink = linkTo(EventController.class).slash(eventId + "/speeches/" + speech.getSpeechId()).withSelfRel();
             speech.add(selflink);
+            Link ratinglink = new Link(IPAddress.IPrating + speech.getSpeechId()).withRel("rating");
+            speech.add(ratinglink);
         }
         return event.getSpeeches();
     }
@@ -68,7 +71,9 @@ public class SpeechService {
             }
         }
         Link selflink = linkTo(EventController.class).slash(eventID + "/speeches/" + speechID).withSelfRel();
+        Link ratinglink = new Link(IPAddress.IPrating + speechID);
         selectedSpeech.add(selflink);
+        selectedSpeech.add(ratinglink);
         return selectedSpeech;
     }
 
@@ -124,4 +129,16 @@ public class SpeechService {
     }
 
 
+    public Speech getSpeechForRating(String speechId) {
+
+        for (Event event:eventRepository.findAll()) {
+            for (Speech speech: event.getSpeeches()) {
+                if (speech.getSpeechId().equals(speechId)) {
+                    return speech;
+                }
+            }
+
+        }
+        return null;
+    }
 }

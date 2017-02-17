@@ -1,17 +1,11 @@
 package com.senacor;
 
-import com.senacor.model.Event;
-import com.senacor.model.Speech;
 import com.senacor.repository.EventRepository;
 import com.senacor.service.EventService;
-import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.time.LocalTime;
-import java.util.List;
 
 
 @SpringBootApplication
@@ -30,6 +24,14 @@ public class DevConMicroserviceEventApplication implements CommandLineRunner{
 
     @Override
     public void run(String... strings) throws Exception {
+
+        /*Event event = eventRepository.findByEventId("58989beeab6e8e4bf2ff4e21");
+        event.setDate(new LocalDate(2017, 02, 17));
+        eventRepository.save(event);*/
+
+       /* Event event2 = eventRepository.findByEventId("5898992eab6e8e4bf2ff4e19");
+        event2.setName("DevCon Winter 2017");
+        eventRepository.delete(event2);*/
 
        //eventRepository.deleteAll();
        /* Event event = new Event();

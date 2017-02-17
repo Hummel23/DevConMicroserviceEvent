@@ -6,5 +6,6 @@ package com.senacor;
 public class IPAddress {
 
     public static final String IPrating = "http://192.168.2.104:8082/rating/";
+    public static final String IPuser = "http://localhost:8081/user/";
 
 }

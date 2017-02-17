@@ -1,5 +1,6 @@
 package com.senacor.service;
 
+import com.senacor.IPAddress;
 import com.senacor.model.User;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -14,7 +15,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class AuthenticationService {
 
-    final String userUri = "http://localhost:8081/user/";
+    final String userUri = IPAddress.IPuser;
     RestTemplate restTemplate = new RestTemplate();
 
 
